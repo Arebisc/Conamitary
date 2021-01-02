@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conamitary.Web", "Conamitary.Web\Conamitary.Web.csproj", "{3511CE79-3856-4D75-A981-0487DA782121}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conamitary.Database", "Conamitary.Database\Conamitary.Database.csproj", "{5A007F00-15D2-4A0B-8843-5EA1C32A193C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conamitary.Database", "Conamitary.Database\Conamitary.Database.csproj", "{5A007F00-15D2-4A0B-8843-5EA1C32A193C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conamitary.Services", "Conamitary.Services\Conamitary.Services.csproj", "{566D2B86-8F20-4E3C-B01B-08299D569567}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conamitary.Dtos", "Conamitary.Dtos\Conamitary.Dtos.csproj", "{78D541DE-907D-4A11-9D31-DAFDA32A88EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{5A007F00-15D2-4A0B-8843-5EA1C32A193C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A007F00-15D2-4A0B-8843-5EA1C32A193C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A007F00-15D2-4A0B-8843-5EA1C32A193C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{566D2B86-8F20-4E3C-B01B-08299D569567}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{566D2B86-8F20-4E3C-B01B-08299D569567}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{566D2B86-8F20-4E3C-B01B-08299D569567}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{566D2B86-8F20-4E3C-B01B-08299D569567}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78D541DE-907D-4A11-9D31-DAFDA32A88EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78D541DE-907D-4A11-9D31-DAFDA32A88EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78D541DE-907D-4A11-9D31-DAFDA32A88EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78D541DE-907D-4A11-9D31-DAFDA32A88EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Conamitary.Database
+namespace Conamitary.Database.Models
 {
     public class Receipe
     {
