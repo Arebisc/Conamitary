@@ -22,11 +22,12 @@ namespace Conamitary.Services.Receipe
             _mapper = mapper;
         }
 
-        public Task<ReceipeDto> Add(ReceipeDto receipeDto)
+        public async Task<ReceipeDto> Add(ReceipeDto receipeDto)
         {
             var model = _mapper.Map<Database.Models.Receipe>(receipeDto);
             _context.Receips.Add(model);
-            return Task.FromResult(_mapper.Map<ReceipeDto>(model));
+            await _context.SaveChangesAsync();
+            return _mapper.Map<ReceipeDto>(model);
         }
     }
 }

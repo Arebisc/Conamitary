@@ -33,6 +33,7 @@ namespace Conamitary.Services.Receipe
              _mapper.Map(receipeDto, receipe);
 
             _context.Receips.Update(receipe);
+            await _context.SaveChangesAsync();
             return _mapper.Map<ReceipeDto>(receipe);
         }
     }

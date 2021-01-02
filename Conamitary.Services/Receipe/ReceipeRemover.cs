@@ -31,6 +31,7 @@ namespace Conamitary.Services.Receipe
                 throw new ArgumentException($"Receipe with Id: {receipeId} does not exist");
             }
             _context.Receips.Remove(receipe);
+            await _context.SaveChangesAsync();
             return _mapper.Map<ReceipeDto>(receipe);
         }
     }
