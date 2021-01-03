@@ -1,11 +1,67 @@
 <template>
     <div id="app">
-        <div id="nav">
-            <router-link to="/">Home</router-link>
-        </div>
-        <router-view />
+        <v-app>
+            <v-navigation-drawer app>
+                <v-list-item>
+                    <v-list-item-content>
+                        <v-list-item-title class="title">
+                            Conamitary
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                            Cooking receipts
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
+                </v-list-item>
+
+                <v-divider></v-divider>
+
+                <v-list dense nav>
+                    <v-list-item
+                        v-for="item in menuItems"
+                        :key="item.title"
+                        link
+                    >
+                        <v-list-item-icon>
+                            <v-icon>{{ item.icon }}</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title>{{
+                                item.title
+                            }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </v-navigation-drawer>
+
+            <v-app-bar app>
+                <!-- -->
+            </v-app-bar>
+
+            <!-- Sizes your content based upon application components -->
+            <v-main>
+                <!-- Provides the application the proper gutter -->
+                <v-container fluid>
+                    <!-- If using vue-router -->
+                    <router-view></router-view>
+                </v-container>
+            </v-main>
+
+            <v-footer app>
+                <!-- -->
+            </v-footer>
+        </v-app>
     </div>
 </template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component
+export default class App extends Vue {
+    private menuItems = [{ title: 'Home', icon: 'mdi-view-dashboard' }];
+}
+</script>
 
 <style lang="scss">
 #app {
