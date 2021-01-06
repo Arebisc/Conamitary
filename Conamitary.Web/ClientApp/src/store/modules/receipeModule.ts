@@ -43,12 +43,31 @@ export class ReceipeModule extends VuexModule {
         }
     }
 
+    @Action
+    public async editReceipe(receipe: ReceipeDto) {
+        const url = `${this.receipeUrl}/${receipe.id}`;
+        const response = await axios.put<ReceipeDto>(url, receipe);
+        if (response.status === 200) {
+            this.changeReceipeInStore(response.data);
+        }
+        else {
+            console.error('Cannot load receipts');
+        }
+    }
+
     @Mutation
     private setReceipes(receipes: ReceipeDto[]) {
         this.receipes = receipes;
     }
 
+    @Mutation
     private addReceipeToStore(receipe: ReceipeDto) {
         this.receipes.push(receipe);
+    }
+
+    @Mutation
+    private changeReceipeInStore(receipe: ReceipeDto) {
+        const receipeInStore = this.receipes.find(x => x.id === receipe.id);
+        Object.assign(receipeInStore, receipe);
     }
 }

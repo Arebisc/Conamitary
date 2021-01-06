@@ -1,8 +1,9 @@
 import 'reflect-metadata';
-import { ReceipeModule } from '@/modules/receipeModule';
 import { vueInversifyPlugin } from '@vanroeybe/vue-inversify-plugin';
 import { Container } from 'inversify';
 import Vue from 'vue';
+
+import { ReceipeModule } from '@/modules/receipeModule';
 
 export const registerContainer = () => {
     const container = new Container();

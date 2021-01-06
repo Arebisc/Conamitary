@@ -39,7 +39,13 @@
                 :headers="headers"
                 :items="receipes"
                 :items-per-page="5"
-            ></v-data-table>
+            >
+                <template v-slot:item.actions="{ item }">
+                    <v-icon @click="editReceipe(item)" class="mr-2">
+                        mdi-pencil
+                    </v-icon>
+                </template>
+            </v-data-table>
         </v-container>
     </div>
 </template>
@@ -76,6 +82,12 @@ export default class Home extends Vue {
             sortable: false,
             filterable: false,
         },
+        {
+            text: 'Akcje',
+            value: 'actions',
+            sortable: false,
+            filterable: false,
+        },
     ];
 
     private receipeDialog = false;
@@ -91,8 +103,19 @@ export default class Home extends Vue {
     }
 
     private async saveChanges() {
-        await receipesModule.addReceipe(this.currentRecipe);
+        if (!this.currentRecipe.id){
+            await receipesModule.addReceipe(this.currentRecipe);
+        } else {
+            await receipesModule.editReceipe(this.currentRecipe);
+        }
+
         this.receipeDialog = false;
+        this.currentRecipe = this.emptyReceipeGenerator.generate();
+    }
+
+    private async editReceipe(selectedReceipe: ReceipeDto) {
+        this.currentRecipe = selectedReceipe;
+        this.receipeDialog = true;
     }
 }
 </script>

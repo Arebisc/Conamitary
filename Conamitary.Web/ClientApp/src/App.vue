@@ -61,6 +61,8 @@ import { Component, Vue } from 'vue-property-decorator';
 @Component
 export default class App extends Vue {
     private navigationDrawer = true;
-    private menuItems = [{ title: 'Home', icon: 'mdi-view-dashboard' }];
+    private menuItems = [
+        { title: 'Przepisy', icon: 'mdi-view-dashboard', to: '/' },
+    ];
 }
 </script>
