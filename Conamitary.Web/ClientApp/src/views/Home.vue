@@ -35,38 +35,11 @@
                     ></receipe-component>
                 </v-card>
             </v-dialog>
-            <v-data-table
-                :headers="headers"
-                :items="receipes"
-                :items-per-page="5"
-            >
-                <template v-slot:item.actions="{ item }">
-                    <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-icon
-                                @click="editReceipe(item)"
-                                v-bind="attrs"
-                                v-on="on"
-                            >
-                                mdi-pencil
-                            </v-icon>
-                        </template>
-                        <span>Edytuj przepis</span>
-                    </v-tooltip>
-                    <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-icon
-                                @click="deleteReceipe(item)"
-                                v-bind="attrs"
-                                v-on="on"
-                            >
-                                mdi-delete
-                            </v-icon>
-                        </template>
-                        <span>Usuń przepis</span>
-                    </v-tooltip>
-                </template>
-            </v-data-table>
+
+            <v-container fluid class="d-flex justify-start mb-3 flex-wrap" id="receipts-container">
+                <receipe-card v-for="n in 20" :key="n" title="Ciasto czekoladowe" imageSrc="https://cdn.vuetifyjs.com/images/cards/house.jpg"></receipe-card>
+            </v-container>
+            
         </v-container>
     </div>
 </template>
@@ -78,10 +51,12 @@ import ReceipeComponent from '@/components/ReceipeComponent.vue';
 import { ReceipeDto } from '@/models/receipeDto';
 import { $inject } from '@vanroeybe/vue-inversify-plugin';
 import { EmptyReceipeGeneratorInterface } from '@/abstract/receipes/EmptyReceipeGeneratorInterface';
+import ReceipeCard from '@/components/ReceipeCard.vue';
 
 @Component({
     components: {
         ReceipeComponent,
+        ReceipeCard
     },
 })
 export default class Home extends Vue {
@@ -150,7 +125,16 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.add-receipe-btn {
-    margin-bottom: 30px;
+
+.home {
+    .add-receipe-btn {
+        margin-bottom: 30px;
+    }
+
+    #receipts-container div {
+        width: 31.33333%;
+        margin: 1%;
+    }
 }
+
 </style>
