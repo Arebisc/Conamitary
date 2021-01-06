@@ -55,6 +55,18 @@ export class ReceipeModule extends VuexModule {
         }
     }
 
+    @Action
+    public async deleteReceipe(receipeId: string) {
+        const url = `${this.receipeUrl}/${receipeId}`;
+        const response = await axios.delete<ReceipeDto>(url);
+        if (response.status === 200) {
+            this.deleteReceipeInStore(response.data.id as string);
+        }
+        else {
+            console.error('Cannot load receipts');
+        }
+    }
+
     @Mutation
     private setReceipes(receipes: ReceipeDto[]) {
         this.receipes = receipes;
@@ -69,5 +81,11 @@ export class ReceipeModule extends VuexModule {
     private changeReceipeInStore(receipe: ReceipeDto) {
         const receipeInStore = this.receipes.find(x => x.id === receipe.id);
         Object.assign(receipeInStore, receipe);
+    }
+
+    @Mutation
+    private deleteReceipeInStore(receipeId: string) {
+        const receipeIndex = this.receipes.findIndex(x => x.id === receipeId);
+        this.receipes.splice(receipeIndex, 1);
     }
 }

@@ -41,9 +41,30 @@
                 :items-per-page="5"
             >
                 <template v-slot:item.actions="{ item }">
-                    <v-icon @click="editReceipe(item)" class="mr-2">
-                        mdi-pencil
-                    </v-icon>
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon
+                                @click="editReceipe(item)"
+                                v-bind="attrs"
+                                v-on="on"
+                            >
+                                mdi-pencil
+                            </v-icon>
+                        </template>
+                        <span>Edytuj przepis</span>
+                    </v-tooltip>
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon
+                                @click="deleteReceipe(item)"
+                                v-bind="attrs"
+                                v-on="on"
+                            >
+                                mdi-delete
+                            </v-icon>
+                        </template>
+                        <span>Usuń przepis</span>
+                    </v-tooltip>
                 </template>
             </v-data-table>
         </v-container>
@@ -103,7 +124,7 @@ export default class Home extends Vue {
     }
 
     private async saveChanges() {
-        if (!this.currentRecipe.id){
+        if (!this.currentRecipe.id) {
             await receipesModule.addReceipe(this.currentRecipe);
         } else {
             await receipesModule.editReceipe(this.currentRecipe);
@@ -116,6 +137,14 @@ export default class Home extends Vue {
     private async editReceipe(selectedReceipe: ReceipeDto) {
         this.currentRecipe = selectedReceipe;
         this.receipeDialog = true;
+    }
+
+    private async deleteReceipe(receipe: ReceipeDto) {
+        const confirmMessage = `Jesteś pewny/a, że chcesz usunąć przepis: ${receipe.title}`;
+
+        if (confirm(confirmMessage)) {
+            await receipesModule.deleteReceipe(receipe.id as string);
+        }
     }
 }
 </script>
