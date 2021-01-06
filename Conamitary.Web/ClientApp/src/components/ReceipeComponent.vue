@@ -34,5 +34,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class ReceipeComponent extends Vue {
     @Prop()
     private receipe!: ReceipeDto;
+
+    private valid = false;
 }
 </script>

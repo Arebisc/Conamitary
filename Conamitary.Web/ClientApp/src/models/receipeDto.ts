@@ -1,6 +1,6 @@
 export interface ReceipeDto {
-    id: string;
-    title: string;
-    ingredients: string;
-    instructions: string;
+    id: string | undefined;
+    title: string | undefined;
+    ingredients: string | undefined;
+    instructions: string | undefined;
 }
