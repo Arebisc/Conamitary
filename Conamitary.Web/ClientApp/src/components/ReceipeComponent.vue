@@ -3,23 +3,25 @@
         <v-form v-model="valid">
             <v-container>
                 <v-row>
-                    <v-text-field
-                        v-model="receipe.title"
-                        label="Tytuł"
-                        required
-                    ></v-text-field>
+                    <v-col>
+                        <v-text-field
+                            v-model="receipe.title"
+                            label="Tytuł"
+                            required
+                        ></v-text-field>
 
-                    <v-textarea
-                        v-model="receipe.ingredients"
-                        label="Składniki"
-                        required
-                    ></v-textarea>
+                        <v-textarea
+                            v-model="receipe.ingredients"
+                            label="Składniki"
+                            required
+                        ></v-textarea>
 
-                    <v-textarea
-                        v-model="receipe.instructions"
-                        label="Instrukcje"
-                        required
-                    ></v-textarea>
+                        <v-textarea
+                            v-model="receipe.instructions"
+                            label="Instrukcje"
+                            required
+                        ></v-textarea>
+                    </v-col>
                 </v-row>
             </v-container>
         </v-form>

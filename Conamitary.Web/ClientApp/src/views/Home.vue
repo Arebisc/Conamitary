@@ -25,8 +25,8 @@
                         <v-toolbar-title>Przepis</v-toolbar-title>
                         <v-spacer></v-spacer>
                         <v-toolbar-items>
-                            <v-btn dark text @click="receipeDialog = false">
-                                Save
+                            <v-btn dark text @click="saveChanges">
+                                Zapisz zmiany
                             </v-btn>
                         </v-toolbar-items>
                     </v-toolbar>
@@ -88,6 +88,11 @@ export default class Home extends Vue {
     private async created() {
         await receipesModule.loadReceipes();
         this.currentRecipe = this.emptyReceipeGenerator.generate();
+    }
+
+    private async saveChanges() {
+        await receipesModule.addReceipe(this.currentRecipe);
+        this.receipeDialog = false;
     }
 }
 </script>
