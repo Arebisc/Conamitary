@@ -71,7 +71,6 @@
 <script lang="ts">
 import { receipesModule } from '@/store';
 import { Component, Vue } from 'vue-property-decorator';
-import ReceipeComponent from '@/components/ReceipeComponent.vue';
 import { ReceipeDto } from '@/models/receipeDto';
 import { $inject } from '@vanroeybe/vue-inversify-plugin';
 import { EmptyReceipeGeneratorInterface } from '@/abstract/receipes/EmptyReceipeGeneratorInterface';
@@ -79,7 +78,6 @@ import ReceipeCard from '@/components/ReceipeCard.vue';
 
 @Component({
     components: {
-        ReceipeComponent,
         ReceipeCard,
     },
 })

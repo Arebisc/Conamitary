@@ -24,6 +24,7 @@
                         v-for="item in menuItems"
                         :key="item.title"
                         link
+                        :to="item.to"
                     >
                         <v-list-item-icon>
                             <v-icon>{{ item.icon }}</v-icon>
@@ -63,6 +64,11 @@ export default class App extends Vue {
     private navigationDrawer = true;
     private menuItems = [
         { title: 'Przepisy', icon: 'mdi-view-dashboard', to: '/' },
+        {
+            title: 'Dodaj przepis',
+            icon: 'mdi-view-dashboard',
+            to: '/add-receipe',
+        },
     ];
 }
 </script>
