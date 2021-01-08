@@ -1,4 +1,4 @@
-import { ReceipeDto } from '@/models/receipeDto';
+import { ReceipeDto } from '@/dtos/receipeDto';
 import { injectable } from 'inversify';
 import { EmptyReceipeGeneratorInterface } from '../../abstract/receipes/EmptyReceipeGeneratorInterface';
 

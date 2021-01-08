@@ -1,4 +1,4 @@
-import { ReceipeDto } from '../../models/receipeDto';
+import { ReceipeDto } from '../../dtos/receipeDto';
 import { Store } from 'vuex';
 import { VuexModule, Module, Action, Mutation } from 'vuex-class-modules';
 import axios from 'axios';
