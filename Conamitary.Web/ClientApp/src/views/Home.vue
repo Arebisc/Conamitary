@@ -1,10 +1,7 @@
 <template>
     <div class="home">
         <v-container>
-            <v-pagination
-                v-model="pageNumber"
-                :length="maxPages"
-            ></v-pagination>
+            <h1>Twoje przepisy</h1>
             <v-dialog
                 v-model="receipeDialog"
                 fullscreen
@@ -143,6 +140,10 @@ export default class Home extends Vue {
 
 <style lang="scss" scoped>
 .home {
+    h1 {
+        text-align: center;
+    }
+
     #receipts-container div {
         width: 31.33333%;
         margin: 1%;
