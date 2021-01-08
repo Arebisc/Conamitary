@@ -1,45 +1,69 @@
 <template>
     <div class="home">
         <v-container>
+            <v-pagination
+                v-model="pageNumber"
+                :length="maxPages"
+            ></v-pagination>
             <v-dialog
                 v-model="receipeDialog"
                 fullscreen
                 hide-overlay
                 transition="dialog-bottom-transition"
             >
-                <template v-slot:activator="{ on, attrs }">
-                    <v-btn
-                        color="primary"
-                        v-bind="attrs"
-                        v-on="on"
-                        class="add-receipe-btn"
-                    >
-                        Dodaj przepis
-                    </v-btn>
-                </template>
                 <v-card>
                     <v-toolbar dark color="primary">
                         <v-btn icon dark @click="receipeDialog = false">
                             <v-icon>mdi-close</v-icon>
                         </v-btn>
-                        <v-toolbar-title>Przepis</v-toolbar-title>
-                        <v-spacer></v-spacer>
-                        <v-toolbar-items>
-                            <v-btn dark text @click="saveChanges">
-                                Zapisz zmiany
-                            </v-btn>
-                        </v-toolbar-items>
+                        <v-toolbar-title>{{
+                            currentRecipe.title
+                        }}</v-toolbar-title>
                     </v-toolbar>
-                    <receipe-component
-                        :receipe="currentRecipe"
-                    ></receipe-component>
+                    <v-container id="receipe-dialog-content">
+                        <v-img
+                            src="https://cdn.vuetifyjs.com/images/cards/house.jpg"
+                            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                            max-height="600"
+                            contain
+                        ></v-img>
+                        <v-card>
+                            <v-card-title>
+                                Składniki
+                            </v-card-title>
+                            <v-card-text>
+                                {{ currentRecipe.ingredients }}
+                            </v-card-text>
+                        </v-card>
+                        <v-card>
+                            <v-card-title>
+                                Instrukcja
+                            </v-card-title>
+                            <v-card-text>
+                                {{ currentRecipe.instructions }}
+                            </v-card-text>
+                        </v-card>
+                    </v-container>
                 </v-card>
             </v-dialog>
 
-            <v-container fluid class="d-flex justify-start mb-3 flex-wrap" id="receipts-container">
-                <receipe-card v-for="n in 20" :key="n" title="Ciasto czekoladowe" imageSrc="https://cdn.vuetifyjs.com/images/cards/house.jpg"></receipe-card>
+            <v-container
+                fluid
+                class="d-flex justify-start mb-3 flex-wrap"
+                id="receipts-container"
+            >
+                <receipe-card
+                    v-for="receipe in receipes"
+                    :key="receipe.id"
+                    :title="receipe.title"
+                    imageSrc="https://cdn.vuetifyjs.com/images/cards/house.jpg"
+                    @click.native="showReceipe(receipe)"
+                ></receipe-card>
             </v-container>
-            
+            <v-pagination
+                v-model="pageNumber"
+                :length="maxPages"
+            ></v-pagination>
         </v-container>
     </div>
 </template>
@@ -56,7 +80,7 @@ import ReceipeCard from '@/components/ReceipeCard.vue';
 @Component({
     components: {
         ReceipeComponent,
-        ReceipeCard
+        ReceipeCard,
     },
 })
 export default class Home extends Vue {
@@ -64,33 +88,23 @@ export default class Home extends Vue {
     @$inject(nameof<EmptyReceipeGeneratorInterface>())
     private emptyReceipeGenerator!: EmptyReceipeGeneratorInterface;
 
-    private headers = [
-        { text: 'Tytuł', value: 'title' },
-        {
-            text: 'Składniki',
-            value: 'ingredients',
-            sortable: false,
-            filterable: false,
-        },
-        {
-            text: 'Instrukcja',
-            value: 'instructions',
-            sortable: false,
-            filterable: false,
-        },
-        {
-            text: 'Akcje',
-            value: 'actions',
-            sortable: false,
-            filterable: false,
-        },
-    ];
-
     private receipeDialog = false;
     private currentRecipe: ReceipeDto = this.emptyReceipeGenerator.generate();
 
+    private receipesPerPage = 9;
+    private pageNumber = 1;
+
     private get receipes() {
-        return receipesModule.receipesGetter;
+        return receipesModule.receipesGetter.slice(
+            this.receipesPerPage * this.pageNumber - this.receipesPerPage,
+            this.receipesPerPage * this.pageNumber - 1
+        );
+    }
+
+    private get maxPages() {
+        return Math.ceil(
+            (receipesModule.receipesGetter.length - 1) / this.receipesPerPage
+        );
     }
 
     private async created() {
@@ -98,43 +112,46 @@ export default class Home extends Vue {
         this.currentRecipe = this.emptyReceipeGenerator.generate();
     }
 
-    private async saveChanges() {
-        if (!this.currentRecipe.id) {
-            await receipesModule.addReceipe(this.currentRecipe);
-        } else {
-            await receipesModule.editReceipe(this.currentRecipe);
-        }
-
-        this.receipeDialog = false;
-        this.currentRecipe = this.emptyReceipeGenerator.generate();
-    }
-
-    private async editReceipe(selectedReceipe: ReceipeDto) {
-        this.currentRecipe = selectedReceipe;
+    private showReceipe(receipe: ReceipeDto) {
+        this.currentRecipe = receipe;
         this.receipeDialog = true;
     }
 
-    private async deleteReceipe(receipe: ReceipeDto) {
-        const confirmMessage = `Jesteś pewny/a, że chcesz usunąć przepis: ${receipe.title}`;
+    // private async saveChanges() {
+    //     if (!this.currentRecipe.id) {
+    //         await receipesModule.addReceipe(this.currentRecipe);
+    //     } else {
+    //         await receipesModule.editReceipe(this.currentRecipe);
+    //     }
 
-        if (confirm(confirmMessage)) {
-            await receipesModule.deleteReceipe(receipe.id as string);
-        }
-    }
+    //     this.receipeDialog = false;
+    //     this.currentRecipe = this.emptyReceipeGenerator.generate();
+    // }
+
+    // private async editReceipe(selectedReceipe: ReceipeDto) {
+    //     this.currentRecipe = selectedReceipe;
+    //     this.receipeDialog = true;
+    // }
+
+    // private async deleteReceipe(receipe: ReceipeDto) {
+    //     const confirmMessage = `Jesteś pewny/a, że chcesz usunąć przepis: ${receipe.title}`;
+
+    //     if (confirm(confirmMessage)) {
+    //         await receipesModule.deleteReceipe(receipe.id as string);
+    //     }
+    // }
 }
 </script>
 
 <style lang="scss" scoped>
-
 .home {
-    .add-receipe-btn {
-        margin-bottom: 30px;
-    }
-
     #receipts-container div {
         width: 31.33333%;
         margin: 1%;
     }
-}
 
+    #receipe-dialog-content div {
+        margin-bottom: 30px;
+    }
+}
 </style>
