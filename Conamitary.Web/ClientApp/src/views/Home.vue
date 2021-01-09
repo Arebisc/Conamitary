@@ -20,11 +20,18 @@
                         <v-spacer></v-spacer>
 
                         <v-btn
-                            color="error"
-                            dark
-                            @click="removeReceipe(currentRecipe)"
+                            color="warning"
+                            @click="editReceipe(currentRecipe)"
+                            icon
                         >
-                            Usuń przepis
+                            <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                        <v-btn
+                            color="error"
+                            @click="removeReceipe(currentRecipe)"
+                            icon
+                        >
+                            <v-icon>mdi-delete</v-icon>
                         </v-btn>
                     </v-toolbar>
                     <v-container id="receipe-dialog-content">
@@ -83,6 +90,7 @@ import { $inject } from '@vanroeybe/vue-inversify-plugin';
 import { EmptyReceipeGeneratorInterface } from '@/abstract/receipes/EmptyReceipeGeneratorInterface';
 import ReceipeCard from '@/components/ReceipeCard.vue';
 import { ReceipeDto } from '@/dtos/receipeDto';
+import EditReceipe from './EditReceipe.vue';
 
 @Component({
     components: {
@@ -130,6 +138,15 @@ export default class Home extends Vue {
             await receipesModule.deleteReceipe(receipe.id as string);
         }
         this.receipeDialog = false;
+    }
+
+    private editReceipe(receipeToEdit: ReceipeDto) {
+        this.$router.push({
+            // eslint-disable-next-line no-undef
+            name: nameof<EditReceipe>(),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            params: { receipe: receipeToEdit as any },
+        });
     }
 }
 </script>
