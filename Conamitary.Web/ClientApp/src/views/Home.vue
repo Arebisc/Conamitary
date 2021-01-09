@@ -16,6 +16,16 @@
                         <v-toolbar-title>{{
                             currentRecipe.title
                         }}</v-toolbar-title>
+
+                        <v-spacer></v-spacer>
+
+                        <v-btn
+                            color="error"
+                            dark
+                            @click="removeReceipe(currentRecipe)"
+                        >
+                            Usuń przepis
+                        </v-btn>
                     </v-toolbar>
                     <v-container id="receipe-dialog-content">
                         <v-img
@@ -113,29 +123,14 @@ export default class Home extends Vue {
         this.receipeDialog = true;
     }
 
-    // private async saveChanges() {
-    //     if (!this.currentRecipe.id) {
-    //         await receipesModule.addReceipe(this.currentRecipe);
-    //     } else {
-    //         await receipesModule.editReceipe(this.currentRecipe);
-    //     }
+    private async removeReceipe(receipe: ReceipeDto) {
+        const confirmMessage = `Jesteś pewny/a, że chcesz usunąć przepis: ${receipe.title}`;
 
-    //     this.receipeDialog = false;
-    //     this.currentRecipe = this.emptyReceipeGenerator.generate();
-    // }
-
-    // private async editReceipe(selectedReceipe: ReceipeDto) {
-    //     this.currentRecipe = selectedReceipe;
-    //     this.receipeDialog = true;
-    // }
-
-    // private async deleteReceipe(receipe: ReceipeDto) {
-    //     const confirmMessage = `Jesteś pewny/a, że chcesz usunąć przepis: ${receipe.title}`;
-
-    //     if (confirm(confirmMessage)) {
-    //         await receipesModule.deleteReceipe(receipe.id as string);
-    //     }
-    // }
+        if (confirm(confirmMessage)) {
+            await receipesModule.deleteReceipe(receipe.id as string);
+        }
+        this.receipeDialog = false;
+    }
 }
 </script>
 
