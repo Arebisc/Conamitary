@@ -23,22 +23,23 @@
                             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                             max-height="600"
                             contain
+                            class="receipe-dialog-item"
                         ></v-img>
-                        <v-card>
+                        <v-card class="receipe-dialog-item">
                             <v-card-title>
                                 Składniki
                             </v-card-title>
-                            <v-card-text>
-                                {{ currentRecipe.ingredients }}
-                            </v-card-text>
+                            <v-card-text
+                                v-html="currentRecipe.ingredients"
+                            ></v-card-text>
                         </v-card>
-                        <v-card>
+                        <v-card class="receipe-dialog-item">
                             <v-card-title>
                                 Instrukcja
                             </v-card-title>
-                            <v-card-text>
-                                {{ currentRecipe.instructions }}
-                            </v-card-text>
+                            <v-card-text
+                                v-html="currentRecipe.instructions"
+                            ></v-card-text>
                         </v-card>
                     </v-container>
                 </v-card>
@@ -68,10 +69,10 @@
 <script lang="ts">
 import { receipesModule } from '@/store';
 import { Component, Vue } from 'vue-property-decorator';
-import { ReceipeDto } from '@/models/receipeDto';
 import { $inject } from '@vanroeybe/vue-inversify-plugin';
 import { EmptyReceipeGeneratorInterface } from '@/abstract/receipes/EmptyReceipeGeneratorInterface';
 import ReceipeCard from '@/components/ReceipeCard.vue';
+import { ReceipeDto } from '@/dtos/receipeDto';
 
 @Component({
     components: {
@@ -92,7 +93,7 @@ export default class Home extends Vue {
     private get receipes() {
         return receipesModule.receipesGetter.slice(
             this.receipesPerPage * this.pageNumber - this.receipesPerPage,
-            this.receipesPerPage * this.pageNumber - 1
+            this.receipesPerPage * this.pageNumber
         );
     }
 
@@ -147,10 +148,6 @@ export default class Home extends Vue {
     #receipts-container div {
         width: 31.33333%;
         margin: 1%;
-    }
-
-    #receipe-dialog-content div {
-        margin-bottom: 30px;
     }
 }
 </style>

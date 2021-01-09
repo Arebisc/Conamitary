@@ -4,7 +4,12 @@ import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
 
+import wysiwyg from 'vue-wysiwyg';
+import "vue-wysiwyg/dist/vueWysiwyg.css";
+
 import { registerContainer } from './modules/diContainer';
+
+Vue.use(wysiwyg, {});
 
 Vue.config.productionTip = false;
 

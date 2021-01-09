@@ -2,6 +2,8 @@ import { ReceipeDto } from '../../dtos/receipeDto';
 import { Store } from 'vuex';
 import { VuexModule, Module, Action, Mutation } from 'vuex-class-modules';
 import axios from 'axios';
+import { AddReceipeModel } from '@/models/addReceipeModel';
+
 
 @Module
 export class ReceipeModule extends VuexModule {
@@ -33,7 +35,7 @@ export class ReceipeModule extends VuexModule {
     }
 
     @Action
-    public async addReceipe(receipe: ReceipeDto) {
+    public async addReceipe(receipe: AddReceipeModel) {
         const response = await axios.post<ReceipeDto>(this.receipeUrl, receipe);
         if (response.status === 200) {
             this.addReceipeToStore(response.data);
