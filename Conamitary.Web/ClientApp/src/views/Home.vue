@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <v-container>
-            <h1>Twoje przepisy</h1>
+            <h1>Moje przepisy</h1>
             <v-dialog
                 v-model="receipeDialog"
                 fullscreen
