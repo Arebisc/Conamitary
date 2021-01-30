@@ -35,7 +35,16 @@ import { receipesModule } from '@/store/index';
 import Home from './Home.vue';
 import { ReceipeDto } from '@/dtos/receipeDto';
 
-@Component
+@Component({
+    beforeRouteLeave: async function(to: any, from: any, next: any) {
+        await this.$dialog
+            .confirm({
+                text: 'Na pewno chcesz opuścić podstronę?',
+                title: 'Uwaga!',
+            })
+            .then(result => next(result));
+    },
+})
 export default class EditReceipe extends Vue {
     @Prop()
     private receipe!: ReceipeDto;
