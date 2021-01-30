@@ -35,7 +35,16 @@ import { receipesModule } from '@/store/index';
 import { AddReceipeModel } from '@/models/addReceipeModel';
 import Home from './Home.vue';
 
-@Component
+@Component({
+    beforeRouteLeave: async function(to: any, from: any, next: any) {
+        await this.$dialog
+            .confirm({
+                text: 'Na pewno chcesz opuścić podstronę?',
+                title: 'Uwaga!',
+            })
+            .then(result => next(result));
+    },
+})
 export default class AddReceipe extends Vue {
     private receipe: AddReceipeModel = {
         title: undefined,
