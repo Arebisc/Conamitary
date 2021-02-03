@@ -51,7 +51,7 @@ import {
 
 @Component({
     beforeRouteLeave: async function(_to, _from, next) {
-        await this.$dialog
+        this.$dialog
             .confirm({
                 text: 'Na pewno chcesz opuścić podstronę?',
                 title: 'Uwaga!',
