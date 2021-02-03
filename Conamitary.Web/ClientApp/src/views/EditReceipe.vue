@@ -36,7 +36,7 @@ import Home from './Home.vue';
 import { ReceipeDto } from '@/dtos/receipeDto';
 
 @Component({
-    beforeRouteLeave: async function(to: any, from: any, next: any) {
+    beforeRouteLeave: async function(_to, _from, next) {
         await this.$dialog
             .confirm({
                 text: 'Na pewno chcesz opuścić podstronę?',

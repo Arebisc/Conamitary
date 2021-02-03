@@ -4,15 +4,15 @@ import { VuexModule, Module, Action, Mutation } from 'vuex-class-modules';
 import axios from 'axios';
 import { AddReceipeModel } from '@/models/addReceipeModel';
 
-
 @Module
 export class ReceipeModule extends VuexModule {
     private receipeUrl = 'api/receipe';
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public constructor(store: Store<any>) {
         super({
             name: nameof<ReceipeModule>(),
-            store
+            store,
         });
     }
 
@@ -25,11 +25,10 @@ export class ReceipeModule extends VuexModule {
     @Action
     public async loadReceipes() {
         const response = await axios.get<ReceipeDto[]>(this.receipeUrl);
-        
+
         if (response.status === 200) {
             this.setReceipes(response.data);
-        }
-        else {
+        } else {
             console.error('Cannot load receipts');
         }
     }
@@ -39,8 +38,7 @@ export class ReceipeModule extends VuexModule {
         const response = await axios.post<ReceipeDto>(this.receipeUrl, receipe);
         if (response.status === 200) {
             this.addReceipeToStore(response.data);
-        }
-        else {
+        } else {
             console.error('Cannot load receipts');
         }
     }
@@ -51,8 +49,7 @@ export class ReceipeModule extends VuexModule {
         const response = await axios.put<ReceipeDto>(url, receipe);
         if (response.status === 200) {
             this.changeReceipeInStore(response.data);
-        }
-        else {
+        } else {
             console.error('Cannot load receipts');
         }
     }
@@ -63,8 +60,7 @@ export class ReceipeModule extends VuexModule {
         const response = await axios.delete<ReceipeDto>(url);
         if (response.status === 200) {
             this.deleteReceipeInStore(response.data.id as string);
-        }
-        else {
+        } else {
             console.error('Cannot load receipts');
         }
     }
