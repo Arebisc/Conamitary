@@ -9,8 +9,7 @@ export class EmptyReceipeGenerator implements EmptyReceipeGeneratorInterface {
             id: undefined,
             title: undefined,
             ingredients: undefined,
-            instructions: undefined
+            instructions: undefined,
         };
     }
-
 }

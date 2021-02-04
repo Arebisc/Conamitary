@@ -22,7 +22,7 @@ const routes: Array<RouteConfig> = [
         path: '/edit-receipe',
         name: nameof<EditReceipe>(),
         component: EditReceipe,
-        props: true
+        props: true,
     },
 ];
 

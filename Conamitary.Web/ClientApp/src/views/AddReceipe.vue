@@ -13,11 +13,19 @@
                             required
                         ></v-text-field>
 
-                        <label>Składniki</label>
-                        <wysiwyg v-model="receipe.ingredients" />
+                        <tiptap-vuetify
+                            v-model="receipe.ingredients"
+                            :extensions="tiptapExtensions"
+                            :toolbar-attributes="darkToolbarAttribute"
+                            placeholder="Składniki..."
+                        />
 
-                        <label>Instrukcja</label>
-                        <wysiwyg v-model="receipe.instructions" />
+                        <tiptap-vuetify
+                            v-model="receipe.instructions"
+                            :extensions="tiptapExtensions"
+                            :toolbar-attributes="darkToolbarAttribute"
+                            placeholder="Instrukcja..."
+                        />
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -35,17 +43,29 @@ import { receipesModule } from '@/store/index';
 import { AddReceipeModel } from '@/models/addReceipeModel';
 import Home from './Home.vue';
 
+import { TiptapVuetify } from 'tiptap-vuetify';
+import {
+    baseExtensionConfigurations,
+    darkToolbarAttribute,
+} from '@/configurations/tiptapVuetify';
+
 @Component({
-    beforeRouteLeave: async function(to: any, from: any, next: any) {
-        await this.$dialog
+    beforeRouteLeave: async function(_to, _from, next) {
+        this.$dialog
             .confirm({
                 text: 'Na pewno chcesz opuścić podstronę?',
                 title: 'Uwaga!',
             })
             .then(result => next(result));
     },
+    components: {
+        TiptapVuetify,
+    },
 })
 export default class AddReceipe extends Vue {
+    private readonly tiptapExtensions = baseExtensionConfigurations;
+    private readonly darkToolbarAttribute = darkToolbarAttribute;
+
     private receipe: AddReceipeModel = {
         title: undefined,
         ingredients: undefined,
