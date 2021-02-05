@@ -43,6 +43,8 @@ import { receipesModule } from '@/store/index';
 import Home from './Home.vue';
 import { ReceipeDto } from '@/dtos/receipeDto';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
 import { TiptapVuetify } from 'tiptap-vuetify';
 import {
     baseExtensionConfigurations,

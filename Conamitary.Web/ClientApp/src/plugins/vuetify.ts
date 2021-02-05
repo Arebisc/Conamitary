@@ -6,6 +6,8 @@ import en from 'vuetify/src/locale/en';
 import VuetifyDialog from 'vuetify-dialog';
 import 'vuetify-dialog/dist/vuetify-dialog.css';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
 import { TiptapVuetifyPlugin } from 'tiptap-vuetify';
 import 'tiptap-vuetify/dist/main.css';
 
@@ -14,8 +16,8 @@ const vuetify = new Vuetify({
     theme: { dark: true },
     lang: {
         locales: { en, pl },
-        current: 'pl'
-    }
+        current: 'pl',
+    },
 });
 
 Vue.use(VuetifyDialog, {
@@ -26,7 +28,7 @@ Vue.use(VuetifyDialog, {
 
 Vue.use(TiptapVuetifyPlugin, {
     vuetify,
-    iconsGroup: 'mdi'
+    iconsGroup: 'mdi',
 });
 
 export default vuetify;

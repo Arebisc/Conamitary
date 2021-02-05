@@ -14,6 +14,8 @@ import {
     HardBreak,
     HorizontalRule,
     History,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
 } from 'tiptap-vuetify';
 
 export const baseExtensionConfigurations = [
