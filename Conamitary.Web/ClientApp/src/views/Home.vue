@@ -105,7 +105,7 @@ export default class Home extends Vue {
     private receipeDialog = false;
     private currentRecipe: ReceipeDto = this.emptyReceipeGenerator.generate();
 
-    private receipesPerPage = 9;
+    private readonly receipesPerPage = 9;
     private pageNumber = 1;
 
     private get receipes() {
@@ -117,7 +117,7 @@ export default class Home extends Vue {
 
     private get maxPages() {
         return Math.ceil(
-            (receipesModule.receipesGetter.length - 1) / this.receipesPerPage
+            receipesModule.receipesGetter.length / this.receipesPerPage
         );
     }
 
