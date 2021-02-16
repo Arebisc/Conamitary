@@ -4,14 +4,16 @@ using Conamitary.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Conamitary.Database.Migrations
 {
     [DbContext(typeof(ConamitaryContext))]
-    partial class ConamitaryContextModelSnapshot : ModelSnapshot
+    [Migration("20210216195925_AddedFiles")]
+    partial class AddedFiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

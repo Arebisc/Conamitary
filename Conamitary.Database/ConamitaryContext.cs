@@ -13,5 +13,6 @@ namespace Conamitary.Database
         { }
 
         public DbSet<Receipe> Receips { get; set; }
+        public DbSet<File> Images { get; set; }
     }
 }

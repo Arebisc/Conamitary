@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Conamitary.Database.Models
 {
@@ -8,5 +9,6 @@ namespace Conamitary.Database.Models
         public string Title { get; set; }
         public string Instructions { get; set; }
         public string Ingredients { get; set; }
+        public ICollection<File> Photos { get; set; }
     }
 }
