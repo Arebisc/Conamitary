@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Conamitary.Database.Migrations
 {
     [DbContext(typeof(ConamitaryContext))]
-    [Migration("20210216195925_AddedFiles")]
+    [Migration("20210221113944_AddedFiles")]
     partial class AddedFiles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,10 +23,9 @@ namespace Conamitary.Database.Migrations
 
             modelBuilder.Entity("Conamitary.Database.Models.File", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Md5Checksum")
                         .HasColumnType("nvarchar(max)");

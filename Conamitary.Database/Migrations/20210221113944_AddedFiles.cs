@@ -11,8 +11,7 @@ namespace Conamitary.Database.Migrations
                 name: "Images",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Md5Checksum = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ReceipeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },

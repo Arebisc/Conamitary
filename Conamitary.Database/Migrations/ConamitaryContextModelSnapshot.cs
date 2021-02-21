@@ -21,10 +21,9 @@ namespace Conamitary.Database.Migrations
 
             modelBuilder.Entity("Conamitary.Database.Models.File", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Md5Checksum")
                         .HasColumnType("nvarchar(max)");

@@ -8,7 +8,7 @@ namespace Conamitary.Database.Models
 {
     public class File
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Md5Checksum { get; set; }
 
         public Guid ReceipeId { get; set; }
