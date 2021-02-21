@@ -26,6 +26,18 @@
                             :toolbar-attributes="darkToolbarAttribute"
                             placeholder="Instrukcja..."
                         />
+
+                        <v-file-input
+                            accept="image/*"
+                            label="Zdjęcia"
+                            filled
+                            show-size
+                            prepend-icon="mdi-camera"
+                            multiple
+                            v-model="receipe.images"
+                            chips
+                        >
+                        </v-file-input>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -72,6 +84,7 @@ export default class AddReceipe extends Vue {
         title: undefined,
         ingredients: undefined,
         instructions: undefined,
+        images: [],
     };
 
     private async save() {

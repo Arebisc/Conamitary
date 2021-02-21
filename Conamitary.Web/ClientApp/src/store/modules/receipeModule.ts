@@ -1,12 +1,17 @@
+import { AddReceipeModelConverterInterface } from '../../abstract/receipes/AddReceipeModelConverterInterface';
 import { ReceipeDto } from '../../dtos/receipeDto';
 import { Store } from 'vuex';
 import { VuexModule, Module, Action, Mutation } from 'vuex-class-modules';
 import axios from 'axios';
 import { AddReceipeModel } from '@/models/addReceipeModel';
+import { $inject } from '@vanroeybe/vue-inversify-plugin';
 
 @Module
 export class ReceipeModule extends VuexModule {
-    private receipeUrl = 'api/receipe';
+    private readonly receipeUrl = 'api/receipe';
+
+    @$inject(nameof<AddReceipeModelConverterInterface>())
+    private readonly addReceipeModelConverter!: AddReceipeModelConverterInterface;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public constructor(store: Store<any>) {
@@ -35,12 +40,23 @@ export class ReceipeModule extends VuexModule {
 
     @Action
     public async addReceipe(receipe: AddReceipeModel) {
-        const response = await axios.post<ReceipeDto>(this.receipeUrl, receipe);
-        if (response.status === 200) {
-            this.addReceipeToStore(response.data);
-        } else {
-            console.error('Cannot load receipts');
+        const formData = this.addReceipeModelConverter.toFormData(receipe);
+        const response = await axios.post<ReceipeDto>(
+            this.receipeUrl,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
+        );
+        debugger;
+
+        if (response.status !== 200) {
+            console.error('Cannot save receipt');
         }
+
+        this.addReceipeToStore(response.data);
     }
 
     @Action
@@ -50,7 +66,7 @@ export class ReceipeModule extends VuexModule {
         if (response.status === 200) {
             this.changeReceipeInStore(response.data);
         } else {
-            console.error('Cannot load receipts');
+            console.error('Cannot save receipt');
         }
     }
 
@@ -61,7 +77,7 @@ export class ReceipeModule extends VuexModule {
         if (response.status === 200) {
             this.deleteReceipeInStore(response.data.id as string);
         } else {
-            console.error('Cannot load receipts');
+            console.error('Cannot delete receipt');
         }
     }
 
