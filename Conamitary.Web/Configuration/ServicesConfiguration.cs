@@ -1,4 +1,6 @@
-﻿using Conamitary.Services.Abstract.Receipe;
+﻿using Conamitary.Services.Abstract.File;
+using Conamitary.Services.Abstract.Receipe;
+using Conamitary.Services.File;
 using Conamitary.Services.Receipe;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -17,6 +19,9 @@ namespace Conamitary.Web.Configuration
             services.AddScoped<IReceipeGetter, ReceipeGetter>();
             services.AddScoped<IReceipeRemover, ReceipeRemover>();
             services.AddScoped<IReceipeUpdater, ReceipeUpdater>();
+
+            services.AddScoped<IMd5Calculator, Md5Calculator>();
+            services.AddHttpClient();
         }
     }
 }
