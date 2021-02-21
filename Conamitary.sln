@@ -7,9 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conamitary.Web", "Conamitar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conamitary.Database", "Conamitary.Database\Conamitary.Database.csproj", "{5A007F00-15D2-4A0B-8843-5EA1C32A193C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conamitary.Services", "Conamitary.Services\Conamitary.Services.csproj", "{566D2B86-8F20-4E3C-B01B-08299D569567}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conamitary.Services", "Conamitary.Services\Conamitary.Services.csproj", "{566D2B86-8F20-4E3C-B01B-08299D569567}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conamitary.Dtos", "Conamitary.Dtos\Conamitary.Dtos.csproj", "{78D541DE-907D-4A11-9D31-DAFDA32A88EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conamitary.Dtos", "Conamitary.Dtos\Conamitary.Dtos.csproj", "{78D541DE-907D-4A11-9D31-DAFDA32A88EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{4E6E90BD-691E-4FD5-B3BF-9C1869403294}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conamitary.Microservices.FileApi", "Microservices\Conamitary.Microservices.FileApi\Conamitary.Microservices.FileApi.csproj", "{D1F98E7F-4DB2-4896-8037-3CAB6BBE2A38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +37,16 @@ Global
 		{78D541DE-907D-4A11-9D31-DAFDA32A88EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78D541DE-907D-4A11-9D31-DAFDA32A88EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78D541DE-907D-4A11-9D31-DAFDA32A88EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1F98E7F-4DB2-4896-8037-3CAB6BBE2A38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1F98E7F-4DB2-4896-8037-3CAB6BBE2A38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1F98E7F-4DB2-4896-8037-3CAB6BBE2A38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1F98E7F-4DB2-4896-8037-3CAB6BBE2A38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D1F98E7F-4DB2-4896-8037-3CAB6BBE2A38} = {4E6E90BD-691E-4FD5-B3BF-9C1869403294}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0702D6F5-4BC0-4282-BD2D-F4592CAB89FB}
