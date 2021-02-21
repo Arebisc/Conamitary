@@ -1,9 +1,8 @@
-﻿using Conamitary.Dtos;
+﻿using Conamitary.Dtos.Receipes;
 using Conamitary.Services.Abstract.Receipe;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Conamitary.Web.Controllers
@@ -44,9 +43,9 @@ namespace Conamitary.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddReceipe([FromBody] ReceipeDto receipeDto)
+        public async Task<IActionResult> AddReceipe([FromForm] AddReceipeDto addReceipeDto)
         {
-            var addedDto = await _receipeAdder.Add(receipeDto);
+            var addedDto = await _receipeAdder.Add(addReceipeDto);
             return Ok(addedDto);
         }
 

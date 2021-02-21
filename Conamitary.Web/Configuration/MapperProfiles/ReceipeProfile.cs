@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Conamitary.Database.Models;
 using Conamitary.Dtos;
+using Conamitary.Dtos.Receipes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace Conamitary.Web.Configuration.MapperProfiles
         {
             CreateMap<Receipe, ReceipeDto>();
             CreateMap<ReceipeDto, Receipe>();
+
+            CreateMap<AddReceipeDto, Receipe>()
+                .ForMember(x => x.Photos, opts => opts.Ignore());
         }
     }
 }

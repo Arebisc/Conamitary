@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Conamitary.Database;
 using Conamitary.Dtos;
+using Conamitary.Dtos.Receipes;
 using Conamitary.Services.Abstract.Receipe;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,5 +1,6 @@
 ﻿using Conamitary.Database;
 using Conamitary.Dtos;
+using Conamitary.Dtos.Receipes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,6 @@ namespace Conamitary.Services.Abstract.Receipe
 {
     public interface IReceipeAdder
     {
-        Task<ReceipeDto> Add(ReceipeDto receipeDto);
+        Task<ReceipeDto> Add(AddReceipeDto receipeDto);
     }
 }
