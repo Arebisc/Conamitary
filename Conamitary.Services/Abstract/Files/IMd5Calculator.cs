@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Conamitary.Services.Abstract.File
+namespace Conamitary.Services.Abstract.Files
 {
     public interface IMd5Calculator
     {
