@@ -1,9 +1,9 @@
-﻿using Conamitary.Services.Abstract.Files;
+﻿using Conamitary.Services.Abstract.Commons;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Conamitary.Services.Files
+namespace Conamitary.Services.Commons
 {
     public class Md5Calculator : IMd5Calculator
     {
