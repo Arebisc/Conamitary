@@ -26,12 +26,12 @@ namespace Conamitary.Services.Receipe
 
         public async Task<ReceipeDto> Remove(Guid receipeId)
         {
-            var receipe = await _context.Receips.FirstOrDefaultAsync(x => x.Id == receipeId);
+            var receipe = await _context.Receipes.FirstOrDefaultAsync(x => x.Id == receipeId);
             if (receipe == null)
             {
                 throw new ArgumentException($"Receipe with Id: {receipeId} does not exist");
             }
-            _context.Receips.Remove(receipe);
+            _context.Receipes.Remove(receipe);
             await _context.SaveChangesAsync();
             return _mapper.Map<ReceipeDto>(receipe);
         }

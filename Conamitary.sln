@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conamitary.Dtos", "Conamita
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{4E6E90BD-691E-4FD5-B3BF-9C1869403294}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conamitary.Microservices.FileApi", "Microservices\Conamitary.Microservices.FileApi\Conamitary.Microservices.FileApi.csproj", "{D1F98E7F-4DB2-4896-8037-3CAB6BBE2A38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conamitary.Microservices.FileApi", "Microservices\Conamitary.Microservices.FileApi\Conamitary.Microservices.FileApi.csproj", "{D1F98E7F-4DB2-4896-8037-3CAB6BBE2A38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Conamitary.Dtos\Conamitary.Dtos.csproj" />
+    <ProjectReference Include="..\..\Conamitary.Services\Conamitary.Services.csproj" />
   </ItemGroup>
 
 

@@ -26,13 +26,13 @@ namespace Conamitary.Services.Receipe
 
         public async Task<ReceipeDto> Get(Guid recipeId)
         {
-            var receipe = await _context.Receips.FirstOrDefaultAsync(x => x.Id == recipeId);
+            var receipe = await _context.Receipes.FirstOrDefaultAsync(x => x.Id == recipeId);
             return _mapper.Map<ReceipeDto>(receipe);
         }
 
         public async Task<IEnumerable<ReceipeDto>> Get()
         {
-            var receipes = await _context.Receips.ToArrayAsync();
+            var receipes = await _context.Receipes.ToArrayAsync();
             return _mapper.Map<IEnumerable<ReceipeDto>>(receipes);
         }
     }

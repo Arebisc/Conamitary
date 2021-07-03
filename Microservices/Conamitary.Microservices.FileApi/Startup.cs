@@ -1,7 +1,13 @@
+using Conamitary.Database;
+using Conamitary.Services.Abstract.Commons;
+using Conamitary.Services.Abstract.Files;
+using Conamitary.Services.Commons;
+using Conamitary.Services.Files;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +31,15 @@ namespace Conamitary.Microservices.FileApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ConamitaryContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IFileGetter, FileGetter>();
+            services.AddScoped<IFileAdder, FileAdder>();
+
+            services.AddScoped<IReceipeImageSaver, LocalDiskImageSaver>();
+            services.AddScoped<IMd5Calculator, Md5Calculator>();
+
             services.AddControllers();
         }
 

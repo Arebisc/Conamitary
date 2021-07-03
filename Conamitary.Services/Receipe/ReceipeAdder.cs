@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Conamitary.Database;
 using Conamitary.Dtos.Receipes;
+using Conamitary.Services.Abstract.Commons;
 using Conamitary.Services.Abstract.Receipe;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +17,6 @@ namespace Conamitary.Services.Receipe
         private readonly ConamitaryContext _context;
         private readonly IMapper _mapper;
         private readonly IHttpClientFactory _httpClientFactory;
-
         private readonly string _fileApiUrl;
 
         public ReceipeAdder(
@@ -28,7 +28,6 @@ namespace Conamitary.Services.Receipe
             _context = context;
             _mapper = mapper;
             _httpClientFactory = httpClientFactory;
-
             _fileApiUrl = configuration.GetSection("FileApiUrl").Value;
         }
 
@@ -36,45 +35,27 @@ namespace Conamitary.Services.Receipe
         {
             var model = _mapper.Map<Database.Models.Receipe>(receipeDto);
 
-            _context.Receips.Add(model);
-            await SaveImages(model, receipeDto.Images);
+            _context.Receipes.Add(model);
+
+            await _context.SaveChangesAsync();
+            await SaveImages(model.Id, receipeDto.Images);
 
             return _mapper.Map<ReceipeDto>(model);
         }
 
-        private async Task SaveImages(Database.Models.Receipe receipe, IEnumerable<IFormFile> formFiles)
-        {
-            var filesToBeSaved = new List<IFormFile>();
-
-            foreach (var file in formFiles)
-            {
-                var fileModel = new Database.Models.File
-                {
-                    ReceipeId = receipe.Id,
-                    Id = Guid.NewGuid()
-                };
-
-                _context.Images.Add(fileModel);
-                filesToBeSaved.Add(file);
-            }
-            await _context.SaveChangesAsync();
-
-            await SendFilesToFilesMicroservice(filesToBeSaved, receipe.Id);
-        }
-
-        private async Task SendFilesToFilesMicroservice(IEnumerable<IFormFile> files, Guid fileId)
+        private async Task SaveImages(Guid receipeId, IEnumerable<IFormFile> formFiles)
         {
             var url = $"{_fileApiUrl}/api/file";
             using var httpClient = _httpClientFactory.CreateClient();
 
-            foreach (var file in files)
+            foreach (var file in formFiles)
             {
                 using (var content = new MultipartFormDataContent())
                 using (var fileStream = file.OpenReadStream())
                 {
                     content.Add(new StreamContent(fileStream), "File", file.FileName);
-                    content.Add(new StringContent(fileId.ToString()), "FileId");
-                    
+                    content.Add(new StringContent(receipeId.ToString()), "receipeId");
+
                     await httpClient.PostAsync(url, content);
                 }
             }

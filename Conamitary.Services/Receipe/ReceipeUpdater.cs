@@ -26,14 +26,14 @@ namespace Conamitary.Services.Receipe
 
         public async Task<ReceipeDto> Update(Guid receipeId, ReceipeDto receipeDto)
         {
-            var receipe = await _context.Receips.FirstOrDefaultAsync(x => x.Id == receipeId);
+            var receipe = await _context.Receipes.FirstOrDefaultAsync(x => x.Id == receipeId);
             if (receipe == null)
             {
                 throw new ArgumentException($"Receipe with Id: {receipeId} does not exist");
             }
              _mapper.Map(receipeDto, receipe);
 
-            _context.Receips.Update(receipe);
+            _context.Receipes.Update(receipe);
             await _context.SaveChangesAsync();
             return _mapper.Map<ReceipeDto>(receipe);
         }
