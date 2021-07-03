@@ -12,7 +12,7 @@ namespace Conamitary.Database
             : base(contextOptions)
         { }
 
-        public DbSet<Receipe> Receips { get; set; }
-        public DbSet<File> Images { get; set; }
+        public DbSet<Receipe> Receipes { get; set; }
+        public DbSet<File> Files { get; set; }
     }
 }

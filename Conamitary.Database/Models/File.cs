@@ -11,7 +11,6 @@ namespace Conamitary.Database.Models
         public Guid Id { get; set; }
         public string Md5Checksum { get; set; }
 
-        public Guid ReceipeId { get; set; }
-        public Receipe Receipe { get; set; }
+        public virtual ICollection<Receipe> Receipes { get; set; }
     }
 }

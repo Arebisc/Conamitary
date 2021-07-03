@@ -17,7 +17,7 @@ namespace Conamitary.Web.Configuration.MapperProfiles
             CreateMap<ReceipeDto, Receipe>();
 
             CreateMap<AddReceipeDto, Receipe>()
-                .ForMember(x => x.Photos, opts => opts.Ignore());
+                .ForMember(x => x.Images, opts => opts.Ignore());
         }
     }
 }

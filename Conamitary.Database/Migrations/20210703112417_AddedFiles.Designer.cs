@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Conamitary.Database.Migrations
 {
     [DbContext(typeof(ConamitaryContext))]
-    [Migration("20210221113944_AddedFiles")]
+    [Migration("20210703112417_AddedFiles")]
     partial class AddedFiles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,14 +30,9 @@ namespace Conamitary.Database.Migrations
                     b.Property<string>("Md5Checksum")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ReceipeId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ReceipeId");
-
-                    b.ToTable("Images");
+                    b.ToTable("Files");
                 });
 
             modelBuilder.Entity("Conamitary.Database.Models.Receipe", b =>
@@ -57,23 +52,37 @@ namespace Conamitary.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Receips");
+                    b.ToTable("Receipes");
                 });
 
-            modelBuilder.Entity("Conamitary.Database.Models.File", b =>
+            modelBuilder.Entity("FileReceipe", b =>
                 {
-                    b.HasOne("Conamitary.Database.Models.Receipe", "Receipe")
-                        .WithMany("Photos")
-                        .HasForeignKey("ReceipeId")
+                    b.Property<Guid>("ImagesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ReceipesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ImagesId", "ReceipesId");
+
+                    b.HasIndex("ReceipesId");
+
+                    b.ToTable("FileReceipe");
+                });
+
+            modelBuilder.Entity("FileReceipe", b =>
+                {
+                    b.HasOne("Conamitary.Database.Models.File", null)
+                        .WithMany()
+                        .HasForeignKey("ImagesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Receipe");
-                });
-
-            modelBuilder.Entity("Conamitary.Database.Models.Receipe", b =>
-                {
-                    b.Navigation("Photos");
+                    b.HasOne("Conamitary.Database.Models.Receipe", null)
+                        .WithMany()
+                        .HasForeignKey("ReceipesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
