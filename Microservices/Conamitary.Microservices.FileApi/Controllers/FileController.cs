@@ -1,8 +1,6 @@
 ﻿using Conamitary.Dtos.Files;
+using Conamitary.Services.Abstract.Files;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Conamitary.Microservices.FileApi.Controllers
@@ -10,9 +8,26 @@ namespace Conamitary.Microservices.FileApi.Controllers
     [Route("api/file")]
     public class FileController : ControllerBase
     {
-        public Task SaveFiles([FromForm] SaveFilesDto files)
+        private readonly IReceipeImageSaver _receipeImageSaver;
+
+        public FileController(IReceipeImageSaver receipeImageSaver)
         {
-            return Task.CompletedTask;
+            _receipeImageSaver = receipeImageSaver;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveFiles([FromForm] SaveReceipeImageDto saveFileContentDto)
+        {
+            var result = await _receipeImageSaver.Save(saveFileContentDto.ReceipeId, saveFileContentDto.File);
+            switch (result)
+            {
+                case Services.Commons.ServiceResults.FileSaverResultEnum.Ok:
+                    return Ok();
+                case Services.Commons.ServiceResults.FileSaverResultEnum.AlreadyExists:
+                    return StatusCode(403);
+                default:
+                    return StatusCode(500);
+            }
         }
     }
 }

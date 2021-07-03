@@ -10,6 +10,7 @@ namespace Conamitary.Services.Commons.ServiceResults
     {
         Ok = 0,
         AlreadyExists = 1,
-        Error = 2
+        Error = 2,
+        ReceipeDoesNotExist = 3
     }
 }
