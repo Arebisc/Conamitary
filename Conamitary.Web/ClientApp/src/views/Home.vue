@@ -71,7 +71,7 @@
                     v-for="receipe in receipes"
                     :key="receipe.id"
                     :title="receipe.title"
-                    imageSrc="https://cdn.vuetifyjs.com/images/cards/house.jpg"
+                    :imageId="receipe.imagesIds[0]"
                     @click.native="showReceipe(receipe)"
                 ></receipe-card>
             </v-container>

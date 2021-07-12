@@ -16,16 +16,21 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { imagesModule } from '@/store/index';
 
 @Component
 export default class ReceipeCard extends Vue {
     @Prop()
-    private imageSrc!: string;
+    private imageId!: string;
 
     @Prop()
     private title!: string;
 
     @Prop()
     private id!: string;
+
+    private get imageSrc() {
+        return imagesModule.imageUrl(this.imageId);
+    }
 }
 </script>
