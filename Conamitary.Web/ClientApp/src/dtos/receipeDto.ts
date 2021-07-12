@@ -3,5 +3,5 @@ export interface ReceipeDto {
     title: string | undefined;
     ingredients: string | undefined;
     instructions: string | undefined;
-    imagesIds: string[];
+    imagesIds: string[] | undefined;
 }

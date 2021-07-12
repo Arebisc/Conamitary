@@ -8,6 +8,6 @@ namespace Conamitary.Dtos.Receipes
         public string Title { get; set; }
         public string Instructions { get; set; }
         public string Ingredients { get; set; }
-        public string ImagesIds { get; set; }
+        public string[] ImagesIds { get; set; }
     }
 }
