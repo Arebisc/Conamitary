@@ -13,8 +13,10 @@ namespace Conamitary.Web.Configuration.MapperProfiles
     {
         public ReceipeProfile()
         {
-            CreateMap<Receipe, ReceipeDto>();
-            CreateMap<ReceipeDto, Receipe>();
+            CreateMap<Receipe, ReceipeDto>()
+                .ForMember(x => x.ImagesIds, opts => opts.MapFrom(y => y.Images.Select(i => i.Id)));
+            CreateMap<ReceipeDto, Receipe>()
+                .ForMember(x => x.Images, opts => opts.Ignore());
 
             CreateMap<AddReceipeDto, Receipe>()
                 .ForMember(x => x.Images, opts => opts.Ignore());

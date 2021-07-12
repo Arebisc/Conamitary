@@ -32,7 +32,9 @@ namespace Conamitary.Services.Receipe
 
         public async Task<IEnumerable<ReceipeDto>> Get()
         {
-            var receipes = await _context.Receipes.ToArrayAsync();
+            var receipes = await _context.Receipes
+                .Include(x => x.Images)
+                .ToArrayAsync();
             return _mapper.Map<IEnumerable<ReceipeDto>>(receipes);
         }
     }
