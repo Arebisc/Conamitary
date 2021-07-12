@@ -22,7 +22,7 @@ export class ImagesModule extends VuexModule {
             if (!imageId) {
                 return require('@/assets/no-image.png');
             }
-            return `${this.imagesUrl}/{imageId}`;
+            return `${this.imagesUrl}/${imageId}`;
         };
     }
 }

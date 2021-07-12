@@ -26,6 +26,17 @@
                             :toolbar-attributes="darkToolbarAttribute"
                             placeholder="Instrukcja..."
                         />
+
+                        <v-container
+                            fluid
+                            class="d-flex justify-start mb-3 flex-wrap"
+                        >
+                            <receipe-image
+                                v-for="imageId in imagesIds"
+                                :key="imageId"
+                                :id="imageId"
+                            ></receipe-image>
+                        </v-container>
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -41,6 +52,8 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { receipesModule } from '@/store/index';
 import Home from './Home.vue';
+import ReceipeImage from './../components/ReceipeImage.vue';
+
 import { ReceipeDto } from '@/dtos/receipeDto';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -62,6 +75,7 @@ import {
     },
     components: {
         TiptapVuetify,
+        ReceipeImage,
     },
 })
 export default class EditReceipe extends Vue {

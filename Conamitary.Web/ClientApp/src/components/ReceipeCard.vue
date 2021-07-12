@@ -1,13 +1,6 @@
 <template>
     <v-card>
-        <v-img
-            :src="imageSrc"
-            class="white--text align-end"
-            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            height="200px"
-        >
-        </v-img>
-
+        <receipe-image :imageId="imageId" :maxHeight="200"></receipe-image>
         <v-card-actions>
             <v-card-title>{{ title }}</v-card-title>
         </v-card-actions>
@@ -17,8 +10,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { imagesModule } from '@/store/index';
+import ReceipeImage from '@/components/ReceipeImage.vue';
 
-@Component
+@Component({
+    components: {
+        ReceipeImage,
+    },
+})
 export default class ReceipeCard extends Vue {
     @Prop()
     private imageId!: string;

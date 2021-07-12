@@ -14,40 +14,45 @@
                             <v-icon>mdi-close</v-icon>
                         </v-btn>
                         <v-toolbar-title>{{
-                            currentRecipe.title
+                            currentReceipe.title
                         }}</v-toolbar-title>
 
                         <v-spacer></v-spacer>
 
                         <v-btn
                             color="warning"
-                            @click="editReceipe(currentRecipe)"
+                            @click="editReceipe(currentReceipe)"
                             icon
                         >
                             <v-icon>mdi-pencil</v-icon>
                         </v-btn>
                         <v-btn
                             color="error"
-                            @click="removeReceipe(currentRecipe)"
+                            @click="removeReceipe(currentReceipe)"
                             icon
                         >
                             <v-icon>mdi-delete</v-icon>
                         </v-btn>
                     </v-toolbar>
                     <v-container id="receipe-dialog-content">
-                        <v-img
-                            src="https://cdn.vuetifyjs.com/images/cards/house.jpg"
-                            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                            max-height="600"
-                            contain
-                            class="receipe-dialog-item"
-                        ></v-img>
+                        <v-carousel v-model="carouselIndex">
+                            <v-carousel-item
+                                v-for="imageId in currentReceipe.imagesIds"
+                                :key="imageId"
+                            >
+                                <receipe-image
+                                    :id="imageId"
+                                    :maxHeight="600"
+                                ></receipe-image>
+                            </v-carousel-item>
+                        </v-carousel>
+
                         <v-card class="receipe-dialog-item">
                             <v-card-title>
                                 Składniki
                             </v-card-title>
                             <v-card-text
-                                v-html="currentRecipe.ingredients"
+                                v-html="currentReceipe.ingredients"
                             ></v-card-text>
                         </v-card>
                         <v-card class="receipe-dialog-item">
@@ -55,7 +60,7 @@
                                 Instrukcja
                             </v-card-title>
                             <v-card-text
-                                v-html="currentRecipe.instructions"
+                                v-html="currentReceipe.instructions"
                             ></v-card-text>
                         </v-card>
                     </v-container>
@@ -70,6 +75,7 @@
                 <receipe-card
                     v-for="receipe in receipes"
                     :key="receipe.id"
+                    :id="receipe.id"
                     :title="receipe.title"
                     :imageId="receipe.imagesIds[0]"
                     @click.native="showReceipe(receipe)"
@@ -88,13 +94,16 @@ import { receipesModule } from '@/store';
 import { Component, Vue } from 'vue-property-decorator';
 import { $inject } from '@vanroeybe/vue-inversify-plugin';
 import { EmptyReceipeGeneratorInterface } from '@/abstract/receipes/EmptyReceipeGeneratorInterface';
-import ReceipeCard from '@/components/ReceipeCard.vue';
 import { ReceipeDto } from '@/dtos/receipeDto';
+
+import ReceipeCard from '@/components/ReceipeCard.vue';
 import EditReceipe from './EditReceipe.vue';
+import ReceipeImage from '@/components/ReceipeImage.vue';
 
 @Component({
     components: {
         ReceipeCard,
+        ReceipeImage,
     },
 })
 export default class Home extends Vue {
@@ -103,10 +112,12 @@ export default class Home extends Vue {
     private emptyReceipeGenerator!: EmptyReceipeGeneratorInterface;
 
     private receipeDialog = false;
-    private currentRecipe: ReceipeDto = this.emptyReceipeGenerator.generate();
+    private currentReceipe: ReceipeDto = this.emptyReceipeGenerator.generate();
 
     private readonly receipesPerPage = 9;
     private pageNumber = 1;
+
+    private carouselIndex = 0;
 
     private get receipes() {
         return receipesModule.receipesGetter.slice(
@@ -123,11 +134,11 @@ export default class Home extends Vue {
 
     private async created() {
         await receipesModule.loadReceipes();
-        this.currentRecipe = this.emptyReceipeGenerator.generate();
+        this.currentReceipe = this.emptyReceipeGenerator.generate();
     }
 
     private showReceipe(receipe: ReceipeDto) {
-        this.currentRecipe = receipe;
+        this.currentReceipe = receipe;
         this.receipeDialog = true;
     }
 
