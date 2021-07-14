@@ -1,5 +1,5 @@
 ﻿using Conamitary.Dtos.Files;
-using Conamitary.Services.Abstract.Files;
+using Conamitary.Services.Abstract.Images;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

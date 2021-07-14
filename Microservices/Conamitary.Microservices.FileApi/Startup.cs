@@ -1,8 +1,10 @@
 using Conamitary.Database;
 using Conamitary.Services.Abstract.Commons;
 using Conamitary.Services.Abstract.Files;
+using Conamitary.Services.Abstract.Images;
 using Conamitary.Services.Commons;
 using Conamitary.Services.Files;
+using Conamitary.Services.Images;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
