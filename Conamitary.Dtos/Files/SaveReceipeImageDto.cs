@@ -12,5 +12,8 @@ namespace Conamitary.Dtos.Files
     {
         public Guid ReceipeId { get; set; }
         public IFormFile File { get; set; }
+
+        public string Extension { get; set; }
+        public string ContentType { get; set; }
     }
 }

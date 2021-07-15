@@ -18,7 +18,7 @@ namespace Conamitary.Microservices.FileApi.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveFiles([FromForm] SaveReceipeImageDto saveFileContentDto)
         {
-            var result = await _receipeImageSaver.Save(saveFileContentDto.ReceipeId, saveFileContentDto.File);
+            var result = await _receipeImageSaver.Save(saveFileContentDto);
             switch (result)
             {
                 case Services.Commons.ServiceResults.FileSaverResultEnum.Ok:

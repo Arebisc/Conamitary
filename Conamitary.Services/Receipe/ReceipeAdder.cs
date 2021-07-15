@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Conamitary.Database;
+using Conamitary.Dtos.Files;
 using Conamitary.Dtos.Receipes;
 using Conamitary.Services.Abstract.Commons;
 using Conamitary.Services.Abstract.Receipe;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -55,6 +57,8 @@ namespace Conamitary.Services.Receipe
                 {
                     content.Add(new StreamContent(fileStream), "File", file.FileName);
                     content.Add(new StringContent(receipeId.ToString()), "receipeId");
+                    content.Add(new StringContent(Path.GetExtension(file.FileName)), nameof(SaveReceipeImageDto.Extension));
+                    content.Add(new StringContent(file.ContentType), nameof(SaveReceipeImageDto.ContentType));
 
                     await httpClient.PostAsync(url, content);
                 }

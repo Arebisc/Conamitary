@@ -10,6 +10,8 @@ namespace Conamitary.Database.Models
     {
         public Guid Id { get; set; }
         public string Md5Checksum { get; set; }
+        public string Extension { get; set; }
+        public string ContentType { get; set; }
 
         public virtual ICollection<Receipe> Receipes { get; set; }
     }

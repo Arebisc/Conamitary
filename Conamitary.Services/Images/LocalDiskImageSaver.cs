@@ -1,4 +1,5 @@
 ﻿using Conamitary.Database;
+using Conamitary.Dtos.Files;
 using Conamitary.Services.Abstract.Commons;
 using Conamitary.Services.Abstract.Images;
 using Conamitary.Services.Commons.ServiceResults;
@@ -27,17 +28,17 @@ namespace Conamitary.Services.Images
             _savePath = configuration.GetSection("FilesLocalPath").Value;
         }
 
-        public async Task<FileSaverResultEnum> Save(Guid receipeId, IFormFile formFile)
+        public async Task<FileSaverResultEnum> Save(SaveReceipeImageDto saveReceipeImageDto)
         {
             var receipe = await _conamitaryContext.Receipes
                 .Include(x => x.Images)
-                .FirstOrDefaultAsync(x => x.Id == receipeId);
+                .FirstOrDefaultAsync(x => x.Id == saveReceipeImageDto.ReceipeId);
             if (receipe == null)
             {
                 return FileSaverResultEnum.ReceipeDoesNotExist;
             }
 
-            using (var sourceStream = formFile.OpenReadStream())
+            using (var sourceStream = saveReceipeImageDto.File.OpenReadStream())
             {
                 var md5Checksum = _md5Calculator.CalculateHash(sourceStream);
 
@@ -51,8 +52,7 @@ namespace Conamitary.Services.Images
                 }
                 else
                 {
-                    var fileExtension = Path.GetExtension(formFile.FileName);
-                    var fullSavePath = GetSavePath(receipeId, fileExtension);
+                    var fullSavePath = GetSavePath(saveReceipeImageDto.ReceipeId, saveReceipeImageDto.Extension);
                     var saveResult = await SaveFileToDisk(fullSavePath, sourceStream);
 
                     if (!saveResult)
@@ -63,7 +63,9 @@ namespace Conamitary.Services.Images
                     var fileToInsert = new Database.Models.File
                     {
                         Id = Guid.NewGuid(),
-                        Md5Checksum = md5Checksum
+                        Md5Checksum = md5Checksum,
+                        ContentType = saveReceipeImageDto.ContentType,
+                        Extension = saveReceipeImageDto.Extension
                     };
 
                     _conamitaryContext.Files.Add(fileToInsert);
