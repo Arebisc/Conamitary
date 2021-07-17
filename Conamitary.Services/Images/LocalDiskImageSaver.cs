@@ -52,14 +52,6 @@ namespace Conamitary.Services.Images
                 }
                 else
                 {
-                    var fullSavePath = GetSavePath(saveReceipeImageDto.ReceipeId, saveReceipeImageDto.Extension);
-                    var saveResult = await SaveFileToDisk(fullSavePath, sourceStream);
-
-                    if (!saveResult)
-                    {
-                        return FileSaverResultEnum.Error;
-                    }
-
                     var fileToInsert = new Database.Models.File
                     {
                         Id = Guid.NewGuid(),
@@ -67,6 +59,14 @@ namespace Conamitary.Services.Images
                         ContentType = saveReceipeImageDto.ContentType,
                         Extension = saveReceipeImageDto.Extension
                     };
+
+                    var fullSavePath = GetSavePath(fileToInsert.Id, saveReceipeImageDto.Extension);
+                    var saveResult = await SaveFileToDisk(fullSavePath, sourceStream);
+
+                    if (!saveResult)
+                    {
+                        return FileSaverResultEnum.Error;
+                    }
 
                     _conamitaryContext.Files.Add(fileToInsert);
                     receipe.Images.Add(fileToInsert);
