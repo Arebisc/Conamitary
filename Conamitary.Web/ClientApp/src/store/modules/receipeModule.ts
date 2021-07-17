@@ -8,7 +8,7 @@ import { $inject } from '@vanroeybe/vue-inversify-plugin';
 
 @Module
 export class ReceipeModule extends VuexModule {
-    private readonly receipeUrl = 'api/receipe';
+    private readonly receipeUrl = 'api/receipes';
 
     @$inject(nameof<AddReceipeModelConverterInterface>())
     private readonly addReceipeModelConverter!: AddReceipeModelConverterInterface;

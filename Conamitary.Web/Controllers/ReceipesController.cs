@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Conamitary.Web.Controllers
 {
-    [Route("api/receipe")]
-    public class ReceipeController : ControllerBase
+    [Route("api/receipes")]
+    public class ReceipesController : ControllerBase
     {
         private readonly IReceipeAdder _receipeAdder;
         private readonly IReceipeGetter _receipeGetter;
         private readonly IReceipeUpdater _receipeUpdater;
         private readonly IReceipeRemover _receipeRemover;
 
-        public ReceipeController(
+        public ReceipesController(
             IReceipeAdder receipeAdder,
             IReceipeGetter receipeGetter,
             IReceipeUpdater receipeUpdater,
