@@ -24,9 +24,6 @@ export default class ReceipeCard extends Vue {
     @Prop()
     private title!: string;
 
-    @Prop()
-    private id!: string;
-
     private get imageSrc() {
         return imagesModule.imageUrl(this.imageId);
     }

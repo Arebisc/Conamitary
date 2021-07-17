@@ -17,7 +17,7 @@ import { imagesModule } from '@/store/index';
 @Component
 export default class ReceipeImage extends Vue {
     @Prop()
-    private imageId!: string;
+    private imageId!: string | undefined;
 
     @Prop()
     private maxHeight!: number;

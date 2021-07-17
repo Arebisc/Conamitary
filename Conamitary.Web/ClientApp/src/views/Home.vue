@@ -35,13 +35,30 @@
                         </v-btn>
                     </v-toolbar>
                     <v-container id="receipe-dialog-content">
-                        <v-carousel v-model="carouselIndex">
+                        <v-carousel
+                            v-model="carouselIndex"
+                            :show-arrows="carouselNavigationArrows"
+                            :hide-delimiters="!carouselNavigationArrows"
+                        >
                             <v-carousel-item
                                 v-for="imageId in currentReceipe.imagesIds"
                                 :key="imageId"
                             >
                                 <receipe-image
-                                    :id="imageId"
+                                    :imageId="imageId"
+                                    :maxHeight="600"
+                                ></receipe-image>
+                            </v-carousel-item>
+
+                            <!-- When item does not exist, show placeholder -->
+                            <v-carousel-item
+                                v-if="
+                                    currentReceipe.imagesIds === undefined ||
+                                        currentReceipe.imagesIds.length === 0
+                                "
+                            >
+                                <receipe-image
+                                    :imageId="undefined"
                                     :maxHeight="600"
                                 ></receipe-image>
                             </v-carousel-item>
@@ -118,6 +135,13 @@ export default class Home extends Vue {
     private pageNumber = 1;
 
     private carouselIndex = 0;
+    private get carouselNavigationArrows() {
+        debugger;
+        return (
+            !!this.currentReceipe.imagesIds &&
+            this.currentReceipe.imagesIds.length > 1
+        );
+    }
 
     private get receipes() {
         return receipesModule.receipesGetter.slice(

@@ -18,8 +18,8 @@ export class ImagesModule extends VuexModule {
     }
 
     public get imageUrl() {
-        return (imageId: string) => {
-            if (!imageId) {
+        return (imageId: string | undefined) => {
+            if (!imageId || imageId === undefined) {
                 return require('@/assets/no-image.png');
             }
             return `${this.imagesUrl}/${imageId}`;

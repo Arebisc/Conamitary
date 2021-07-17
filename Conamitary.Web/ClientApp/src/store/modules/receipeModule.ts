@@ -50,7 +50,6 @@ export class ReceipeModule extends VuexModule {
                 },
             }
         );
-        debugger;
 
         if (response.status !== 200) {
             console.error('Cannot save receipt');

@@ -24,6 +24,10 @@ namespace Conamitary.Web.Controllers
         [HttpGet("{imageId}")]
         public async Task<IActionResult> Get(Guid imageId)
         {
+            if (Guid.Empty == imageId)
+            {
+                return BadRequest();
+            }
             var client = _httpClientFactory.CreateClient(ApiTypes.FileApi);
             var fileStream = await client.GetStreamAsync($"api/file/{imageId}");
 
