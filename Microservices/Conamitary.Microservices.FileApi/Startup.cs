@@ -40,6 +40,8 @@ namespace Conamitary.Microservices.FileApi
             services.AddScoped<IFileAdder, FileAdder>();
 
             services.AddScoped<IReceipeImageSaver, LocalDiskImageSaver>();
+            services.AddScoped<IReceipeImageGetter, LocalDiskImageGetter>();
+
             services.AddScoped<IMd5Calculator, Md5Calculator>();
 
             services.AddControllers();

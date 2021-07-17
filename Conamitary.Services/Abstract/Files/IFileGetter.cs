@@ -10,5 +10,7 @@ namespace Conamitary.Services.Abstract.Files
     public interface IFileGetter
     {
         Task<File> Get(string md5Checksum);
+        Task<File> Get(Guid id);
+        Task<string> GetContentType(Guid id);
     }
 }

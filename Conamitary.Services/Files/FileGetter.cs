@@ -20,5 +20,15 @@ namespace Conamitary.Services.Files
         {
             return _context.Files.FirstOrDefaultAsync(x => x.Md5Checksum == md5Checksum);
         }
+
+        public Task<File> Get(Guid id)
+        {
+            return _context.Files.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<string> GetContentType(Guid id)
+        {
+            return (await _context.Files.FirstOrDefaultAsync(x => x.Id == id)).ContentType;
+        }
     }
 }
