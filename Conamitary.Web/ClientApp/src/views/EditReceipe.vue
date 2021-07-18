@@ -3,6 +3,11 @@
         <v-form>
             <v-container>
                 <v-card>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn @click="save" width="100px">Zapisz</v-btn>
+                        <v-spacer></v-spacer>
+                    </v-card-actions>
                     <v-card-title>
                         Edytuj przepis
                     </v-card-title>
@@ -27,21 +32,33 @@
                             placeholder="Instrukcja..."
                         />
 
-                        <v-container
-                            fluid
-                            class="d-flex justify-start mb-3 flex-wrap"
-                        >
-                            <receipe-image
-                                v-for="imageId in imagesIds"
-                                :key="imageId"
-                                :id="imageId"
-                            ></receipe-image>
+                        <v-container>
+                            <v-row>
+                                <v-col
+                                    cols="4"
+                                    v-for="imageId in receipe.imagesIds"
+                                    :key="imageId"
+                                >
+                                    <v-card>
+                                        <v-btn
+                                            color="error"
+                                            @click="removeImage(imageId)"
+                                            icon
+                                        >
+                                            <v-icon>mdi-delete</v-icon>
+                                        </v-btn>
+
+                                        <v-card-text>
+                                            <receipe-image
+                                                :imageId="imageId"
+                                                :maxHeight="200"
+                                            ></receipe-image>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-col>
+                            </v-row>
                         </v-container>
                     </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn @click="save">Zapisz</v-btn>
-                    </v-card-actions>
                 </v-card>
             </v-container>
         </v-form>
@@ -89,6 +106,10 @@ export default class EditReceipe extends Vue {
         await receipesModule.editReceipe(this.receipe);
         // eslint-disable-next-line no-undef
         this.$router.push({ name: nameof<Home>() });
+    }
+
+    private async removeImage() {
+        // TODO
     }
 }
 </script>

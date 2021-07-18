@@ -136,7 +136,6 @@ export default class Home extends Vue {
 
     private carouselIndex = 0;
     private get carouselNavigationArrows() {
-        debugger;
         return (
             !!this.currentReceipe.imagesIds &&
             this.currentReceipe.imagesIds.length > 1
