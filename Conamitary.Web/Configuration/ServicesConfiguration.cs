@@ -28,6 +28,7 @@ namespace Conamitary.Web.Configuration
 
             services.AddScoped<IFileGetter, FileGetter>();
             services.AddScoped<IReceipeFileRemover, ReceipeFileRemover>();
+            services.AddScoped<IReceipeFileAdder, ReceipeFileAdder>();
         }
     }
 }

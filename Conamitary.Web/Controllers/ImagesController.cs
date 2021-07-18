@@ -1,4 +1,5 @@
-﻿using Conamitary.Services.Abstract.Files;
+﻿using Conamitary.Dtos.Files;
+using Conamitary.Services.Abstract.Files;
 using Conamitary.Services.Abstract.Receipe;
 using Conamitary.Services.Commons;
 using Microsoft.AspNetCore.Mvc;
@@ -14,15 +15,18 @@ namespace Conamitary.Web.Controllers
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IFileGetter _fileGetter;
         private readonly IReceipeFileRemover _receipeFileRemover;
+        private readonly IReceipeFileAdder _receipeFileAdder;
 
         public ImagesController(
             IHttpClientFactory httpClientFactory,
             IFileGetter fileGetter,
-            IReceipeFileRemover receipeFileRemover)
+            IReceipeFileRemover receipeFileRemover,
+            IReceipeFileAdder receipeFileAdder)
         {
             _httpClientFactory = httpClientFactory;
             _fileGetter = fileGetter;
             _receipeFileRemover = receipeFileRemover;
+            _receipeFileAdder = receipeFileAdder;
         }
 
         [HttpGet("{imageId}")]
@@ -41,13 +45,20 @@ namespace Conamitary.Web.Controllers
         }
 
         [HttpDelete("{imageId}/{receipeId}")]
-        public async Task<IActionResult> Delete(Guid imageId, Guid receipeId)
+        public async Task<IActionResult> RemoveImageFromReceipe(Guid imageId, Guid receipeId)
         {
             if (Guid.Empty == imageId)
             {
                 return BadRequest();
             }
             await _receipeFileRemover.RemoveFileFromReceipe(imageId, receipeId);
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddImagesToReceipe([FromForm]AddImagesToReceipeDto addImagesToReceipeDto)
+        {
+            await _receipeFileAdder.Add(addImagesToReceipeDto.ReceipeId, addImagesToReceipeDto.Images);
             return Ok();
         }
     }
