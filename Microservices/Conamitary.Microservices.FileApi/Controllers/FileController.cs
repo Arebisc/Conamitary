@@ -11,13 +11,16 @@ namespace Conamitary.Microservices.FileApi.Controllers
     {
         private readonly IReceipeImageSaver _receipeImageSaver;
         private readonly IReceipeImageGetter _receipeImageGetter;
+        private readonly IReceipeImageRemover _receipeImageRemover;
 
         public FileController(
             IReceipeImageSaver receipeImageSaver,
-            IReceipeImageGetter receipeImageGetter)
+            IReceipeImageGetter receipeImageGetter,
+            IReceipeImageRemover receipeImageRemover)
         {
             _receipeImageSaver = receipeImageSaver;
             _receipeImageGetter = receipeImageGetter;
+            _receipeImageRemover = receipeImageRemover;
         }
 
         [HttpPost]
@@ -46,6 +49,22 @@ namespace Conamitary.Microservices.FileApi.Controllers
 
             var imageStream = result.Stream;
             return File(imageStream, result.ContentType);
+        }
+
+        [HttpDelete("{fileId}")]
+        public async Task<IActionResult> RemoveFile(Guid fileId)
+        {
+            var result = await _receipeImageRemover.Remove(fileId);
+            if(result == Services.Commons.ServiceResults.FileRemoverResult.FileNotFound)
+            {
+                return StatusCode(404);
+            }
+            else if(result == Services.Commons.ServiceResults.FileRemoverResult.Error)
+            {
+                return StatusCode(400);
+            }
+
+            return Ok();
         }
     }
 }
