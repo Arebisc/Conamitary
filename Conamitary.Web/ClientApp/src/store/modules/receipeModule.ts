@@ -1,3 +1,4 @@
+import { RemoveImageFromReceipeModel } from './../../models/removeImageFromReceipeModel';
 import { AddReceipeModelConverterInterface } from '../../abstract/receipes/AddReceipeModelConverterInterface';
 import { ReceipeDto } from '../../dtos/receipeDto';
 import { Store } from 'vuex';
@@ -100,5 +101,16 @@ export class ReceipeModule extends VuexModule {
     private deleteReceipeInStore(receipeId: string) {
         const receipeIndex = this.receipes.findIndex(x => x.id === receipeId);
         this.receipes.splice(receipeIndex, 1);
+    }
+
+    @Mutation
+    public removeImageFromReceipe(removeModel: RemoveImageFromReceipeModel) {
+        const receipe = this.receipes.find(x => x.id === removeModel.receipeId);
+        const fileIndex = receipe?.imagesIds?.findIndex(
+            x => x === removeModel.imageId
+        );
+        if (fileIndex !== undefined && fileIndex > -1) {
+            receipe?.imagesIds?.splice(fileIndex, 1);
+        }
     }
 }

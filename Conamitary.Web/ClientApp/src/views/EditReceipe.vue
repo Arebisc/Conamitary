@@ -42,7 +42,9 @@
                                     <v-card>
                                         <v-btn
                                             color="error"
-                                            @click="removeImage(imageId)"
+                                            @click="
+                                                removeImage(imageId, receipe.id)
+                                            "
                                             icon
                                         >
                                             <v-icon>mdi-delete</v-icon>
@@ -80,6 +82,7 @@ import {
     baseExtensionConfigurations,
     darkToolbarAttribute,
 } from '@/configurations/tiptapVuetify';
+import { imagesModule } from '@/store/index';
 
 @Component({
     beforeRouteLeave: async function(_to, _from, next) {
@@ -108,8 +111,8 @@ export default class EditReceipe extends Vue {
         this.$router.push({ name: nameof<Home>() });
     }
 
-    private async removeImage() {
-        // TODO
+    private async removeImage(imageId: string, receipeId: string) {
+        await imagesModule.removeImageFromReceipe({ imageId, receipeId });
     }
 }
 </script>

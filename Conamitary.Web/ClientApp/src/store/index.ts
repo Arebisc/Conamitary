@@ -9,4 +9,4 @@ const store = new Vuex.Store({});
 export default store;
 
 export const receipesModule = new ReceipeModule(store);
-export const imagesModule = new ImagesModule(store);
+export const imagesModule = new ImagesModule(store, receipesModule);
