@@ -105,8 +105,6 @@ import {
     darkToolbarAttribute,
 } from '@/configurations/tiptapVuetify';
 import { imagesModule } from '@/store/index';
-import { AddImagesToReceipeModelConverterInterface } from '@/abstract/images/AddImagesToReceipeModelConverterInterface';
-import { $inject } from '@vanroeybe/vue-inversify-plugin';
 
 @Component({
     beforeRouteLeave: async function(_to, _from, next) {
