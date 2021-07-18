@@ -111,8 +111,17 @@ export default class EditReceipe extends Vue {
         this.$router.push({ name: nameof<Home>() });
     }
 
-    private async removeImage(imageId: string, receipeId: string) {
-        await imagesModule.removeImageFromReceipe({ imageId, receipeId });
+    private removeImage(imageId: string, receipeId: string) {
+        this.$dialog
+            .confirm({
+                text: 'Czy na pewno chcesz usunąć to zdjęcie?',
+                title: 'Uwaga!',
+            })
+            .then(userResponse => {
+                if (userResponse as boolean) {
+                    imagesModule.removeImageFromReceipe({ imageId, receipeId });
+                }
+            });
     }
 }
 </script>
