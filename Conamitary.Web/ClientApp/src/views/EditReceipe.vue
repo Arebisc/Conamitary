@@ -3,11 +3,6 @@
         <v-form>
             <v-container>
                 <v-card>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn @click="save" width="100px">Zapisz</v-btn>
-                        <v-spacer></v-spacer>
-                    </v-card-actions>
                     <v-card-title>
                         Edytuj przepis
                     </v-card-title>
@@ -31,7 +26,34 @@
                             :toolbar-attributes="darkToolbarAttribute"
                             placeholder="Instrukcja..."
                         />
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn @click="save">Zapisz</v-btn>
+                    </v-card-actions>
+                </v-card>
 
+                <v-card style="margin-top: 30px;">
+                    <v-card-title>
+                        Zdjęcia
+                    </v-card-title>
+                    <v-card-text>
+                        <v-file-input
+                            accept="image/*"
+                            label="Dodaj nowe zdjęcia"
+                            filled
+                            show-size
+                            prepend-icon="mdi-camera"
+                            multiple
+                            chips
+                            v-model="newImages"
+                        >
+                        </v-file-input>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn @click="saveNewFiles">Prześlij</v-btn>
+                    </v-card-actions>
+                    <v-card-text v-if="receipe.imagesIds.length > 0">
                         <v-container>
                             <v-row>
                                 <v-col
@@ -83,6 +105,8 @@ import {
     darkToolbarAttribute,
 } from '@/configurations/tiptapVuetify';
 import { imagesModule } from '@/store/index';
+import { AddImagesToReceipeModelConverterInterface } from '@/abstract/images/AddImagesToReceipeModelConverterInterface';
+import { $inject } from '@vanroeybe/vue-inversify-plugin';
 
 @Component({
     beforeRouteLeave: async function(_to, _from, next) {
@@ -105,8 +129,20 @@ export default class EditReceipe extends Vue {
     private readonly tiptapExtensions = baseExtensionConfigurations;
     private readonly darkToolbarAttribute = darkToolbarAttribute;
 
+    private newImages = [];
+
     private async save() {
         await receipesModule.editReceipe(this.receipe);
+        // eslint-disable-next-line no-undef
+        this.$router.push({ name: nameof<Home>() });
+    }
+
+    private async saveNewFiles() {
+        debugger;
+        await imagesModule.addImagesToReceipe({
+            receipeId: this.receipe.id as string,
+            images: this.newImages,
+        });
         // eslint-disable-next-line no-undef
         this.$router.push({ name: nameof<Home>() });
     }
@@ -127,7 +163,7 @@ export default class EditReceipe extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.add-receipe {
+.edit-receipe {
     .v-card__text {
         div {
             margin-bottom: 30px;
