@@ -4,8 +4,10 @@ using Conamitary.Services.Commons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Conamitary.Services.Receipe
@@ -14,7 +16,6 @@ namespace Conamitary.Services.Receipe
     {
         private readonly ConamitaryContext _conamitaryContext;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly string _fileApiUrl;
 
         public ReceipeFileRemover(
             ConamitaryContext conamitaryContext,
@@ -50,7 +51,22 @@ namespace Conamitary.Services.Receipe
             await SendFileRemovedFromReceipe(fileId);
         }
 
-        public async Task SendFileRemovedFromReceipe(Guid fileId)
+        public async Task RemoveFilesByIds(IEnumerable<Guid> filesIds)
+        {
+            var url = $"/api/file";
+            using var client = _httpClientFactory.CreateClient(ApiTypes.FileApi);
+
+            HttpRequestMessage request = new HttpRequestMessage
+            {
+                Content = JsonContent.Create(filesIds),
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri(url, UriKind.Relative)
+            };
+
+            await client.SendAsync(request);
+        }
+
+        private async Task SendFileRemovedFromReceipe(Guid fileId)
         {
             var url = $"/api/file/{fileId}";
             using var client = _httpClientFactory.CreateClient(ApiTypes.FileApi);

@@ -4,6 +4,7 @@ using Conamitary.Services.Commons.ServiceResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,12 +29,57 @@ namespace Conamitary.Services.Images
             var fileEntity = await _conamitaryContext.Files
                 .Include(x => x.Receipes)
                 .FirstOrDefaultAsync( x=> x.Id == fileId);
+
+            var removalResult = await RemoveSingleFile(fileEntity);
+            if (removalResult != FileRemoverResult.Ok)
+            {
+                return removalResult;
+            }
+            else
+            {
+                await _conamitaryContext.SaveChangesAsync();
+                return FileRemoverResult.Ok;
+            }
+        }
+
+        public async Task<Dictionary<Guid, FileRemoverResult>> Remove(IEnumerable<Guid> filesIds)
+        {
+            if (!filesIds.Any())
+            {
+                return new Dictionary<Guid, FileRemoverResult>();
+            }
+
+            var fileEntities = _conamitaryContext.Files
+                .Include(x => x.Receipes)
+                .Where(x => filesIds.Contains(x.Id));
+            if(!fileEntities.Any())
+            {
+                return new Dictionary<Guid, FileRemoverResult>();
+            }
+
+            var resultDictionary = new Dictionary<Guid, FileRemoverResult>();
+            foreach(var fileId in filesIds)
+            {
+                var fileEntity = fileEntities.FirstOrDefault(x => x.Id == fileId);
+                var removalResult = await RemoveSingleFile(fileEntity);
+
+                resultDictionary.Add(fileId, removalResult);
+            }
+
+            await _conamitaryContext.SaveChangesAsync();
+
+            return resultDictionary;
+        }
+
+        private async Task<FileRemoverResult> 
+            RemoveSingleFile(Database.Models.File fileEntity)
+        {
             if (fileEntity == null)
             {
                 return FileRemoverResult.FileNotFound;
             }
 
-            var fullPath = GetFileFullPath(fileId, fileEntity.Extension);
+            var fullPath = GetFileFullPath(fileEntity.Id, fileEntity.Extension);
             if (!File.Exists(fullPath))
             {
                 return FileRemoverResult.Error;
@@ -45,13 +91,10 @@ namespace Conamitary.Services.Images
             }
 
             await DeletePhysicalFileAsync(fullPath);
-
             _conamitaryContext.Files.Remove(fileEntity);
-            await _conamitaryContext.SaveChangesAsync();
 
             return FileRemoverResult.Ok;
         }
-
 
         private string GetFileFullPath(Guid fileId, string fileExtension)
         {

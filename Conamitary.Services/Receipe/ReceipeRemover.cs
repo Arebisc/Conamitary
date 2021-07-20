@@ -18,16 +18,16 @@ namespace Conamitary.Services.Receipe
     {
         private readonly ConamitaryContext _context;
         private readonly IMapper _mapper;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IReceipeFileRemover _receipeFileRemover;
 
         public ReceipeRemover(
             ConamitaryContext context,
             IMapper mapper,
-            IHttpClientFactory httpClientFactory)
+            IReceipeFileRemover receipeFileRemover)
         {
             _context = context;
             _mapper = mapper;
-            _httpClientFactory = httpClientFactory;
+            _receipeFileRemover = receipeFileRemover;
         }
 
         public async Task<ReceipeDto> Remove(Guid receipeId)
@@ -42,24 +42,9 @@ namespace Conamitary.Services.Receipe
             _context.Receipes.Remove(receipe);
             await _context.SaveChangesAsync();
 
-            await RemoveImages(receipe.Images.Select(x => x.Id));
+            await _receipeFileRemover.RemoveFilesByIds(receipe.Images.Select(x => x.Id));
 
             return _mapper.Map<ReceipeDto>(receipe);
-        }
-
-        public async Task RemoveImages(IEnumerable<Guid> fileIds)
-        {
-            if(!fileIds.Any())
-            {
-                return;
-            }
-
-            using var client = _httpClientFactory.CreateClient(ApiTypes.FileApi);
-            foreach (var fileId in fileIds)
-            {
-                var url = $"/api/file/{fileId}";
-                await client.DeleteAsync(url);
-            }
         }
     }
 }

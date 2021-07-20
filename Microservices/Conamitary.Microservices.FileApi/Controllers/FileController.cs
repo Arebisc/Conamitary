@@ -2,6 +2,7 @@
 using Conamitary.Services.Abstract.Images;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Conamitary.Microservices.FileApi.Controllers
@@ -65,6 +66,13 @@ namespace Conamitary.Microservices.FileApi.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> RemoveFile([FromBody] IEnumerable<Guid> filesIds)
+        {
+            var result = await _receipeImageRemover.Remove(filesIds);
+            return Ok(result);
         }
     }
 }

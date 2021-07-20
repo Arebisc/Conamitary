@@ -10,5 +10,6 @@ namespace Conamitary.Services.Abstract.Images
     public interface IReceipeImageRemover
     {
         Task<FileRemoverResult> Remove(Guid fileId);
+        Task<Dictionary<Guid, FileRemoverResult>> Remove(IEnumerable<Guid> filesIds);
     }
 }
