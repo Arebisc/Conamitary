@@ -9,7 +9,8 @@ import { AddImagesToReceipeModelConverterInterface } from '@/abstract/images/Add
 
 @Module
 export class ImagesModule extends VuexModule {
-    private readonly imagesUrl = 'api/images';
+    private imagesEndpointUrl: string | null = null;
+    private readonly configurationUrl = 'api/configuration/fileApiUrl';
 
     // eslint-disable-next-line no-undef
     @$inject(nameof<AddImagesToReceipeModelConverterInterface>())
@@ -26,8 +27,8 @@ export class ImagesModule extends VuexModule {
         });
     }
 
-    public get url() {
-        return this.imagesUrl;
+    public get baseUrl() {
+        return `${this.imagesEndpointUrl}/api/images`;
     }
 
     public get imageUrl() {
@@ -35,15 +36,26 @@ export class ImagesModule extends VuexModule {
             if (!imageId || imageId === undefined) {
                 return require('@/assets/no-image.png');
             }
-            return `${this.imagesUrl}/${imageId}`;
+            return `${this.baseUrl}/${imageId}`;
         };
+    }
+
+    @Action
+    public async initializeModule() {
+        const result = await axios.get(this.configurationUrl);
+
+        if (result.status === 200) {
+            this.setFileEndpointUrl(result.data);
+        } else {
+            throw new Error('Cannot initialize images module!');
+        }
     }
 
     @Action
     public async removeImageFromReceipe(
         removeModel: RemoveImageFromReceipeModel
     ) {
-        const url = `${this.imagesUrl}/${removeModel.imageId}/${removeModel.receipeId}`;
+        const url = `${this.baseUrl}/${removeModel.imageId}/${removeModel.receipeId}`;
         const response = await axios.delete(url);
 
         if (response.status === 200) {
@@ -61,7 +73,7 @@ export class ImagesModule extends VuexModule {
             addImagesToReceipeModel
         );
 
-        const response = await axios.post(this.imagesUrl, formData, {
+        const response = await axios.post(this.baseUrl, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -71,5 +83,10 @@ export class ImagesModule extends VuexModule {
         } else {
             console.error('Cannot add images to receipe.');
         }
+    }
+
+    @Mutation
+    private setFileEndpointUrl(endpointUrl: string) {
+        this.imagesEndpointUrl = endpointUrl;
     }
 }

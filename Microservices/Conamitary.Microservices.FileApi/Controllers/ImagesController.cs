@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Conamitary.Microservices.FileApi.Controllers
 {
-    [Route("api/file")]
-    public class FileController : ControllerBase
+    [Route("api/images")]
+    public class ImagesController : ControllerBase
     {
         private readonly IReceipeImageSaver _receipeImageSaver;
         private readonly IReceipeImageGetter _receipeImageGetter;
         private readonly IReceipeImageRemover _receipeImageRemover;
 
-        public FileController(
+        public ImagesController(
             IReceipeImageSaver receipeImageSaver,
             IReceipeImageGetter receipeImageGetter,
             IReceipeImageRemover receipeImageRemover)
