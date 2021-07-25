@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Conamitary.Services.Abstract.Receipe
 {
-    public interface IReceipeFileAdder
+    public interface IReceipeImageAdder
     {
-        Task Add(Guid receipeId, IEnumerable<IFormFile> files);
+        Task Add(Guid receipeId, IFormFile file);
     }
 }

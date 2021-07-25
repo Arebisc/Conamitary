@@ -13,7 +13,7 @@ namespace Conamitary.Database.Services.Receipe
             _context = context;
         }
 
-        public Task<Models.Receipe> Update(Guid id, Models.Receipe receipe)
+        public Task<Models.Receipe> Update(Models.Receipe receipe)
         {
             _context.Receipes.Update(receipe);
             return Task.FromResult(receipe);

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Conamitary.Services.Abstract.Receipe
 {
-    public interface IReceipeRemover
+    public interface IReceipeDeleter
     {
         Task<ReceipeDto> Remove(Guid receipeId);
     }

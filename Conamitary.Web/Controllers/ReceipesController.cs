@@ -13,13 +13,13 @@ namespace Conamitary.Web.Controllers
         private readonly IReceipeAdder _receipeAdder;
         private readonly IReceipeGetter _receipeGetter;
         private readonly IReceipeUpdater _receipeUpdater;
-        private readonly IReceipeRemover _receipeRemover;
+        private readonly IReceipeDeleter _receipeRemover;
 
         public ReceipesController(
             IReceipeAdder receipeAdder,
             IReceipeGetter receipeGetter,
             IReceipeUpdater receipeUpdater,
-            IReceipeRemover receipeRemover)
+            IReceipeDeleter receipeRemover)
         {
             _receipeAdder = receipeAdder;
             _receipeGetter = receipeGetter;
@@ -43,7 +43,7 @@ namespace Conamitary.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddReceipe([FromForm] AddReceipeDto addReceipeDto)
+        public async Task<IActionResult> AddReceipe([FromBody] AddReceipeDto addReceipeDto)
         {
             var addedDto = await _receipeAdder.Add(addReceipeDto);
             return Ok(addedDto);

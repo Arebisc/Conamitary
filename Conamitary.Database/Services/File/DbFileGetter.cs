@@ -27,7 +27,7 @@ namespace Conamitary.Database.Services.File
             return _context.Files.FirstOrDefaultAsync(x => x.Id == fileId);
         }
 
-        public Task<IEnumerable<Models.File>> Get(bool includeFiles)
+        public Task<IEnumerable<Models.File>> Get(bool includeFiles = false)
         {
             if (includeFiles)
             {
@@ -37,6 +37,11 @@ namespace Conamitary.Database.Services.File
             }
 
             return Task.FromResult(_context.Files.AsEnumerable());
+        }
+
+        public Task<Models.File> Get(string md5Checksum)
+        {
+            return _context.Files.FirstOrDefaultAsync(x => x.Md5Checksum == md5Checksum);
         }
     }
 }

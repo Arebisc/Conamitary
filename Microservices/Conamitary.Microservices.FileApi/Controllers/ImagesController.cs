@@ -1,5 +1,6 @@
 ﻿using Conamitary.Dtos.Files;
-using Conamitary.Services.Abstract.Images;
+using Conamitary.Services.Abstract.PhysicalFiles;
+using Conamitary.Services.Abstract.Receipe;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,33 +11,27 @@ namespace Conamitary.Microservices.FileApi.Controllers
     [Route("api/images")]
     public class ImagesController : ControllerBase
     {
-        private readonly IReceipeImageSaver _receipeImageSaver;
+        private readonly IReceipeImageAdder _receipeImageAdder;
         private readonly IReceipeImageGetter _receipeImageGetter;
         private readonly IReceipeImageRemover _receipeImageRemover;
 
         public ImagesController(
-            IReceipeImageSaver receipeImageSaver,
+            IReceipeImageAdder receipeImageAdder,
             IReceipeImageGetter receipeImageGetter,
             IReceipeImageRemover receipeImageRemover)
         {
-            _receipeImageSaver = receipeImageSaver;
+            _receipeImageAdder = receipeImageAdder;
             _receipeImageGetter = receipeImageGetter;
             _receipeImageRemover = receipeImageRemover;
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveFiles([FromForm] SaveReceipeImageDto saveFileContentDto)
+        public async Task<IActionResult> SaveImages([FromForm] SaveReceipeImageDto saveFileContentDto)
         {
-            var result = await _receipeImageSaver.Save(saveFileContentDto);
-            switch (result)
-            {
-                case Services.Commons.ServiceResults.FileSaverResultEnum.Ok:
-                    return Ok();
-                case Services.Commons.ServiceResults.FileSaverResultEnum.AlreadyExists:
-                    return StatusCode(403);
-                default:
-                    return StatusCode(500);
-            }
+            await _receipeImageAdder.Add(
+                saveFileContentDto.ReceipeId,
+                saveFileContentDto.File);
+            return Ok();
         }
 
         [HttpGet("{fileId}")]
@@ -52,27 +47,18 @@ namespace Conamitary.Microservices.FileApi.Controllers
             return File(imageStream, result.ContentType);
         }
 
-        [HttpDelete("{fileId}")]
-        public async Task<IActionResult> RemoveFile(Guid fileId)
+        [HttpDelete("{receipeId}/{fileId}")]
+        public async Task<IActionResult> RemoveFileFromReceipe(Guid receipeId, Guid fileId)
         {
-            var result = await _receipeImageRemover.Remove(fileId);
-            if(result == Services.Commons.ServiceResults.FileRemoverResult.FileNotFound)
-            {
-                return StatusCode(404);
-            }
-            else if(result == Services.Commons.ServiceResults.FileRemoverResult.Error)
-            {
-                return StatusCode(400);
-            }
-
+            await _receipeImageRemover.RemoveImageFromReceipe(fileId, receipeId);
             return Ok();
         }
 
         [HttpDelete]
         public async Task<IActionResult> RemoveFile([FromBody] IEnumerable<Guid> filesIds)
         {
-            var result = await _receipeImageRemover.Remove(filesIds);
-            return Ok(result);
+            await _receipeImageRemover.RemoveImagesByIds(filesIds);
+            return Ok();
         }
     }
 }
