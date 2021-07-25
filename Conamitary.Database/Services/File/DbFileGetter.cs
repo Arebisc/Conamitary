@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Conamitary.Database.Services.File
 {
-    public class FileGetter : IFileGetter
+    public class DbFileGetter : IDbFileGetter
     {
         private readonly ConamitaryContext _context;
 
-        public FileGetter(ConamitaryContext context)
+        public DbFileGetter(ConamitaryContext context)
         {
             _context = context;
         }

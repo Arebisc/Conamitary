@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 
 namespace Conamitary.Database.Services.Receipe
 {
-    public class ReceipeAdder : IReceipeAdder
+    public class DbReceipeAdder : IDbReceipeAdder
     {
         private readonly ConamitaryContext _context;
 
-        public ReceipeAdder(ConamitaryContext context)
+        public DbReceipeAdder(ConamitaryContext context)
         {
             _context = context;
         }

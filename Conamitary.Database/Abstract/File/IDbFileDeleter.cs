@@ -2,8 +2,8 @@
 
 namespace Conamitary.Database.Abstract.Receipe
 {
-    public interface IReceipeAdder
+    public interface IDbFileDeleter
     {
-        Task<Models.Receipe> Add(Models.Receipe file);
+        Task<Models.File> Delete(Models.File file);
     }
 }

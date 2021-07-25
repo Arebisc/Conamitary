@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Conamitary.Database.Abstract.Receipe
 {
-    public interface IReceipeGetter
+    public interface IDbReceipeGetter
     {
         Task<Models.Receipe> Get(Guid recipeId, bool includeImages = false);
         Task<IEnumerable<Models.Receipe>> Get(bool includeImages = false);

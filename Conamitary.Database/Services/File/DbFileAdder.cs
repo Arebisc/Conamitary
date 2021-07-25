@@ -3,18 +3,18 @@ using System.Threading.Tasks;
 
 namespace Conamitary.Database.Services.File
 {
-    public class FileUpdater : IFileUpdater
+    public class DbFileAdder : IDbFileAdder
     {
         private readonly ConamitaryContext _context;
 
-        public FileUpdater(ConamitaryContext context)
+        public DbFileAdder(ConamitaryContext context)
         {
             _context = context;
         }
 
-        public Task<Models.File> Update(Models.File file)
+        public Task<Models.File> Add(Models.File file)
         {
-            _context.Files.Update(file);
+            _context.Files.Add(file);
             return Task.FromResult(file);
         }
     }

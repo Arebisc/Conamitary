@@ -2,7 +2,7 @@
 
 namespace Conamitary.Database.Abstract.File
 {
-    public interface IFileUpdater
+    public interface IDbFileUpdater
     {
         Task<Models.File> Update(Models.File file);
     }

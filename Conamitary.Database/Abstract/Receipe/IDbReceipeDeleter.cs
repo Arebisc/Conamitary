@@ -2,7 +2,7 @@
 
 namespace Conamitary.Database.Abstract.Receipe
 {
-    public interface IReceipeDeleter
+    public interface IDbReceipeDeleter
     {
         Task<Models.Receipe> Delete(Models.Receipe receipe);
     }

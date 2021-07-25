@@ -12,15 +12,15 @@ namespace Conamitary.Database.Configuration
     {
         public static void AddDbServices(this IServiceCollection services)
         {
-            services.AddScoped<IReceipeAdder, ReceipeAdder>();
-            services.AddScoped<IReceipeGetter, ReceipeGetter>();
-            services.AddScoped<IReceipeDeleter, ReceipeDeleter>();
-            services.AddScoped<IReceipeUpdater, ReceipeUpdater>();
+            services.AddScoped<IDbReceipeAdder, DbReceipeAdder>();
+            services.AddScoped<IDbReceipeGetter, DbReceipeGetter>();
+            services.AddScoped<IDbReceipeDeleter, DbReceipeDeleter>();
+            services.AddScoped<IDbReceipeUpdater, DbReceipeUpdater>();
 
-            services.AddScoped<IFileAdder, FileAdder>();
-            services.AddScoped<IFileGetter, FileGetter>();
-            services.AddScoped<IFileDeleter, FileDeleter>();
-            services.AddScoped<IFileUpdater, FileUpdater>();
+            services.AddScoped<IDbFileAdder, DbFileAdder>();
+            services.AddScoped<IDbFileGetter, DbFileGetter>();
+            services.AddScoped<IDbFileDeleter, DbFileDeleter>();
+            services.AddScoped<IDbFileUpdater, DbFileUpdater>();
 
             services.AddScoped<IDbContextSaver, DbContextSaver>();
         }

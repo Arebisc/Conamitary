@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 
 namespace Conamitary.Database.Services.File
 {
-    public class FileDeleter : IFileDeleter
+    public class DbFileDeleter : IDbFileDeleter
     {
         private readonly ConamitaryContext _conamitaryContext;
 
-        public FileDeleter(ConamitaryContext conamitaryContext)
+        public DbFileDeleter(ConamitaryContext conamitaryContext)
         {
             _conamitaryContext = conamitaryContext;
         }

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Conamitary.Database.Services.Receipe
 {
-    public class ReceipeGetter: IReceipeGetter
+    public class DbReceipeGetter: IDbReceipeGetter
     {
         private readonly ConamitaryContext _context;
 
-        public ReceipeGetter(ConamitaryContext context)
+        public DbReceipeGetter(ConamitaryContext context)
         {
             _context = context;
         }
