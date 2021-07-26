@@ -33,7 +33,7 @@ namespace Conamitary.Web
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAutomapper();
-            services.AddServices(Configuration.GetSection("FileApiUrl").Value);
+            services.AddServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

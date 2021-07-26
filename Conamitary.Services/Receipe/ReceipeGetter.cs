@@ -1,40 +1,35 @@
 ﻿using AutoMapper;
-using Conamitary.Database;
-using Conamitary.Dtos;
+using Conamitary.Database.Abstract.Receipe;
 using Conamitary.Dtos.Receipes;
 using Conamitary.Services.Abstract.Receipe;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Conamitary.Services.Receipe
 {
     public class ReceipeGetter : IReceipeGetter
     {
-        private readonly ConamitaryContext _context;
+        private readonly IDbReceipeGetter _dbReceipeGetter;
         private readonly IMapper _mapper;
 
         public ReceipeGetter(
-            ConamitaryContext context,
+            IDbReceipeGetter dbReceipeGetter,
             IMapper mapper)
         {
-            _context = context;
+            _dbReceipeGetter = dbReceipeGetter;
             _mapper = mapper;
         }
 
         public async Task<ReceipeDto> Get(Guid recipeId)
         {
-            var receipe = await _context.Receipes.FirstOrDefaultAsync(x => x.Id == recipeId);
+            var receipe = await _dbReceipeGetter.Get(recipeId);
             return _mapper.Map<ReceipeDto>(receipe);
         }
 
         public async Task<IEnumerable<ReceipeDto>> Get()
         {
-            var receipes = await _context.Receipes
-                .Include(x => x.Images)
-                .ToArrayAsync();
+            var receipes = await _dbReceipeGetter.Get(true);
             return _mapper.Map<IEnumerable<ReceipeDto>>(receipes);
         }
     }

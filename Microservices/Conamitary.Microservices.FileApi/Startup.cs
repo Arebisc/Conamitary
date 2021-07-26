@@ -1,23 +1,17 @@
 using Conamitary.Database;
+using Conamitary.Database.Configuration;
 using Conamitary.Services.Abstract.Commons;
-using Conamitary.Services.Abstract.Files;
-using Conamitary.Services.Abstract.Images;
+using Conamitary.Services.Abstract.PhysicalFiles;
+using Conamitary.Services.Abstract.Receipe;
 using Conamitary.Services.Commons;
-using Conamitary.Services.Files;
-using Conamitary.Services.Images;
+using Conamitary.Services.PhysicalFiles;
+using Conamitary.Services.Receipe;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Conamitary.Microservices.FileApi
 {
@@ -36,14 +30,26 @@ namespace Conamitary.Microservices.FileApi
             services.AddDbContext<ConamitaryContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddScoped<IFileGetter, FileGetter>();
-            services.AddScoped<IFileAdder, FileAdder>();
+            services.AddScoped<IPhysicalFileSaver, LocalDiskFileSaver>();
+            services.AddScoped<IPhysicalFileGetter, LocalDiskFileGetter>();
+            services.AddScoped<IPhysicalFileRemover, LocalDiskFileRemover>();
 
-            services.AddScoped<IReceipeImageSaver, LocalDiskImageSaver>();
-            services.AddScoped<IReceipeImageGetter, LocalDiskImageGetter>();
-            services.AddScoped<IReceipeImageRemover, LocalDiskImageRemover>();
+            services.AddScoped<IReceipeImageAdder, ReceipeImageAdder>();
+            services.AddScoped<IReceipeImageRemover, ReceipeImageRemover>();
+            services.AddScoped<IReceipeImageGetter, ReceipeImageGetter>();
 
             services.AddScoped<IMd5Calculator, Md5Calculator>();
+
+            services.AddDbServices();
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyOrigin();
+                    policy.AllowAnyMethod();
+                });
+            });
 
             services.AddControllers();
         }
@@ -59,6 +65,8 @@ namespace Conamitary.Microservices.FileApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

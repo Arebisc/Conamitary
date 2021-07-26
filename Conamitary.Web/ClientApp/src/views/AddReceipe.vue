@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { receipesModule } from '@/store/index';
+import { imagesModule, receipesModule } from '@/store/index';
 import { AddReceipeModel } from '@/models/addReceipeModel';
 import Home from './Home.vue';
 
@@ -88,7 +88,11 @@ export default class AddReceipe extends Vue {
     };
 
     private async save() {
-        await receipesModule.addReceipe(this.receipe);
+        const addedReceipe = await receipesModule.addReceipe(this.receipe);
+        await imagesModule.addImagesToReceipe({
+            receipeId: addedReceipe?.id as string,
+            images: this.receipe.images,
+        });
         // eslint-disable-next-line no-undef
         this.$router.push({ name: nameof<Home>() });
     }
