@@ -6,6 +6,6 @@ namespace Conamitary.Services.Abstract.Receipe
 {
     public interface IReceipeImageAdder
     {
-        Task Add(Guid receipeId, IFormFile file);
+        Task<Guid> Add(Guid receipeId, IFormFile file);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Conamitary.Dtos.Files;
-using Conamitary.Services.Abstract.PhysicalFiles;
 using Conamitary.Services.Abstract.Receipe;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -26,15 +26,16 @@ namespace Conamitary.Microservices.FileApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveImages([FromForm] SaveReceipeImageDto saveFileContentDto)
+        public async Task<IActionResult> SaveImage([FromForm] SaveReceipeImageDto saveFileContentDto)
         {
-            await _receipeImageAdder.Add(
+            var addedFileId = await _receipeImageAdder.Add(
                 saveFileContentDto.ReceipeId,
-                saveFileContentDto.File);
-            return Ok();
+                saveFileContentDto.Image);
+            return Ok(addedFileId);
         }
 
         [HttpGet("{fileId}")]
+        [EnableCors]
         public async Task<IActionResult> GetFile(Guid fileId)
         {
             var result = await _receipeImageGetter.Get(fileId);
@@ -48,6 +49,7 @@ namespace Conamitary.Microservices.FileApi.Controllers
         }
 
         [HttpDelete("{receipeId}/{fileId}")]
+        [EnableCors]
         public async Task<IActionResult> RemoveFileFromReceipe(Guid receipeId, Guid fileId)
         {
             await _receipeImageRemover.RemoveImageFromReceipe(fileId, receipeId);
@@ -55,6 +57,7 @@ namespace Conamitary.Microservices.FileApi.Controllers
         }
 
         [HttpDelete]
+        [EnableCors]
         public async Task<IActionResult> RemoveFile([FromBody] IEnumerable<Guid> filesIds)
         {
             await _receipeImageRemover.RemoveImagesByIds(filesIds);

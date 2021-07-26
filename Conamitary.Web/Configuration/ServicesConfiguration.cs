@@ -18,9 +18,9 @@ namespace Conamitary.Web.Configuration
             services.AddScoped<IReceipeUpdater, ReceipeUpdater>();
 
             services.AddScoped<IMd5Calculator, Md5Calculator>();
+            services.AddScoped<IFileApiHttpClient, FileApiHttpClient>();
 
-            services.AddScoped<IReceipeImageRemover, ReceipeImageRemover>();
-            services.AddScoped<IReceipeImageAdder, ReceipeImageAdder>();
+            services.AddHttpClient();
 
             services.AddDbServices();
         }

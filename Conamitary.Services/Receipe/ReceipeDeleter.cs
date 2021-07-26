@@ -2,6 +2,7 @@
 using Conamitary.Database.Abstract;
 using Conamitary.Database.Abstract.Receipe;
 using Conamitary.Dtos.Receipes;
+using Conamitary.Services.Abstract.Commons;
 using Conamitary.Services.Abstract.Receipe;
 using System;
 using System.Linq;
@@ -15,20 +16,20 @@ namespace Conamitary.Services.Receipe
         private readonly IDbReceipeDeleter _dbReceipeDeleter;
         private readonly IDbContextSaver _dbContextSaver;
         private readonly IMapper _mapper;
-        private readonly IReceipeImageRemover _receipeFileRemover;
+        private readonly IFileApiHttpClient _fileApiHttpClient;
 
         public ReceipeDeleter(
             IDbReceipeGetter dbReceipeGetter,
             IDbReceipeDeleter dbReceipeDeleter,
             IDbContextSaver dbContextSaver,
             IMapper mapper,
-            IReceipeImageRemover receipeFileRemover)
+            IFileApiHttpClient fileApiHttpClient)
         {
             _dbReceipeGetter = dbReceipeGetter;
             _dbReceipeDeleter = dbReceipeDeleter;
             _dbContextSaver = dbContextSaver;
             _mapper = mapper;
-            _receipeFileRemover = receipeFileRemover;
+            _fileApiHttpClient = fileApiHttpClient;
         }
 
         public async Task<ReceipeDto> Remove(Guid receipeId)
@@ -41,7 +42,7 @@ namespace Conamitary.Services.Receipe
             await _dbReceipeDeleter.Delete(receipe);
             await _dbContextSaver.SaveChangesAsync();
 
-            await _receipeFileRemover.RemoveImagesByIds(receipe.Images.Select(x => x.Id));
+            await _fileApiHttpClient.InvokeDeleteFiles(receipe.Images.Select(x => x.Id));
 
             return _mapper.Map<ReceipeDto>(receipe);
         }

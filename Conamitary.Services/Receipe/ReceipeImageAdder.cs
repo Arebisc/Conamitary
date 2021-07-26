@@ -36,7 +36,7 @@ namespace Conamitary.Services.Receipe
             _md5Calculator = md5Calculator;
         }
 
-        public async Task Add(Guid receipeId, IFormFile file)
+        public async Task<Guid> Add(Guid receipeId, IFormFile file)
         {
             var receipeEntity = await _dbReceipeGetter.Get(receipeId, true);
             if(receipeEntity == null)
@@ -51,6 +51,8 @@ namespace Conamitary.Services.Receipe
             if (existingFileModel != null)
             {
                 receipeEntity.Images.Add(existingFileModel);
+                await _dbContextSaver.SaveChangesAsync();
+                return existingFileModel.Id;
             }
             else
             {
@@ -59,14 +61,17 @@ namespace Conamitary.Services.Receipe
                     Id = Guid.NewGuid(),
                     Md5Checksum = md5Checksum,
                     ContentType = file.ContentType,
-                    Extension = System.IO.Path.GetExtension(file.FileName)
+                    Extension = System.IO.Path.GetExtension(file.FileName),
                 };
 
                 await _dbFileAdder.Add(fileModel);
-                await _physicalFileSaver.Save(fileModel.Id, fileModel.Extension, fileStream);
-            }
+                receipeEntity.Images.Add(fileModel);
+                await _dbContextSaver.SaveChangesAsync();
 
-            await _dbContextSaver.SaveChangesAsync();
+                await _physicalFileSaver.Save(fileModel.Id, fileModel.Extension, fileStream);
+
+                return fileModel.Id;
+            }
         }
     }
 }

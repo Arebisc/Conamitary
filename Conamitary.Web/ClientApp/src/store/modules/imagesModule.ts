@@ -4,17 +4,11 @@ import { Store } from 'vuex';
 import { VuexModule, Module, Action, Mutation } from 'vuex-class-modules';
 import axios from 'axios';
 import { ReceipeModule } from './receipeModule';
-import { $inject } from '@vanroeybe/vue-inversify-plugin';
-import { AddImagesToReceipeModelConverterInterface } from '@/abstract/images/AddImagesToReceipeModelConverterInterface';
 
 @Module
 export class ImagesModule extends VuexModule {
     private imagesEndpointUrl: string | null = null;
-    private readonly configurationUrl = 'api/configuration/fileApiUrl';
-
-    // eslint-disable-next-line no-undef
-    @$inject(nameof<AddImagesToReceipeModelConverterInterface>())
-    private modelConverter!: AddImagesToReceipeModelConverterInterface;
+    private readonly configurationEndpointUrl = 'api/configuration/fileApiUrl';
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public constructor(
@@ -42,7 +36,7 @@ export class ImagesModule extends VuexModule {
 
     @Action
     public async initializeModule() {
-        const result = await axios.get(this.configurationUrl);
+        const result = await axios.get(this.configurationEndpointUrl);
 
         if (result.status === 200) {
             this.setFileEndpointUrl(result.data);
@@ -55,7 +49,7 @@ export class ImagesModule extends VuexModule {
     public async removeImageFromReceipe(
         removeModel: RemoveImageFromReceipeModel
     ) {
-        const url = `${this.baseUrl}/${removeModel.imageId}/${removeModel.receipeId}`;
+        const url = `${this.baseUrl}/${removeModel.receipeId}/${removeModel.imageId}`;
         const response = await axios.delete(url);
 
         if (response.status === 200) {
@@ -69,19 +63,24 @@ export class ImagesModule extends VuexModule {
     public async addImagesToReceipe(
         addImagesToReceipeModel: AddImagesToReceipeModel
     ) {
-        const formData = this.modelConverter.toFormData(
-            addImagesToReceipeModel
-        );
+        for (const image of addImagesToReceipeModel.images) {
+            const formData = new FormData();
+            formData.append('image', image);
+            formData.append('receipeId', addImagesToReceipeModel.receipeId);
 
-        const response = await axios.post(this.baseUrl, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        if (response.status === 200) {
-            return;
-        } else {
-            console.error('Cannot add images to receipe.');
+            const response = await axios.post<string>(this.baseUrl, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            if (response.status === 200) {
+                this.receipesModule.insertImageToReceipe({
+                    receipeId: addImagesToReceipeModel.receipeId,
+                    imageId: response.data,
+                });
+            } else {
+                console.error('Cannot add images to receipe.');
+            }
         }
     }
 

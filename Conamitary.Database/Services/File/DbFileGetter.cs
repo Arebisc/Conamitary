@@ -43,5 +43,12 @@ namespace Conamitary.Database.Services.File
         {
             return _context.Files.FirstOrDefaultAsync(x => x.Md5Checksum == md5Checksum);
         }
+
+        public Task<bool> IsFileStillInUse(Guid fileId)
+        {
+            return _context.Files
+                .Include(x => x.Receipes)
+                .AnyAsync(x => x.Id == fileId && x.Receipes.Any());
+        }
     }
 }

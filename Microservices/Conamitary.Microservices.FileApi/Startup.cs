@@ -42,6 +42,15 @@ namespace Conamitary.Microservices.FileApi
 
             services.AddDbServices();
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyOrigin();
+                    policy.AllowAnyMethod();
+                });
+            });
+
             services.AddControllers();
         }
 
@@ -56,6 +65,8 @@ namespace Conamitary.Microservices.FileApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

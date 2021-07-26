@@ -1,18 +1,15 @@
+import { AddImagesToReceipeModel } from './../../models/addImagesToReceipeModel';
 import { RemoveImageFromReceipeModel } from './../../models/removeImageFromReceipeModel';
-import { AddReceipeModelConverterInterface } from '../../abstract/receipes/AddReceipeModelConverterInterface';
 import { ReceipeDto } from '../../dtos/receipeDto';
 import { Store } from 'vuex';
 import { VuexModule, Module, Action, Mutation } from 'vuex-class-modules';
 import axios from 'axios';
 import { AddReceipeModel } from '@/models/addReceipeModel';
-import { $inject } from '@vanroeybe/vue-inversify-plugin';
+import { AddImageToReceipeDto } from '@/dtos/addImagesToReceipeDto';
 
 @Module
 export class ReceipeModule extends VuexModule {
     private readonly receipeUrl = 'api/receipes';
-
-    @$inject(nameof<AddReceipeModelConverterInterface>())
-    private readonly addReceipeModelConverter!: AddReceipeModelConverterInterface;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public constructor(store: Store<any>) {
@@ -41,28 +38,22 @@ export class ReceipeModule extends VuexModule {
 
     @Action
     public async addReceipe(receipe: AddReceipeModel) {
-        const formData = this.addReceipeModelConverter.toFormData(receipe);
-        const response = await axios.post<ReceipeDto>(
-            this.receipeUrl,
-            formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            }
-        );
+        const response = await axios.post<ReceipeDto>(this.receipeUrl, receipe);
 
         if (response.status !== 200) {
             console.error('Cannot save receipt');
+            return;
         }
 
         this.addReceipeToStore(response.data);
+        return response.data;
     }
 
     @Action
     public async editReceipe(receipe: ReceipeDto) {
         const url = `${this.receipeUrl}/${receipe.id}`;
         const response = await axios.put<ReceipeDto>(url, receipe);
+
         if (response.status === 200) {
             this.changeReceipeInStore(response.data);
         } else {
@@ -74,6 +65,7 @@ export class ReceipeModule extends VuexModule {
     public async deleteReceipe(receipeId: string) {
         const url = `${this.receipeUrl}/${receipeId}`;
         const response = await axios.delete<ReceipeDto>(url);
+
         if (response.status === 200) {
             this.deleteReceipeInStore(response.data.id as string);
         } else {
@@ -112,5 +104,11 @@ export class ReceipeModule extends VuexModule {
         if (fileIndex !== undefined && fileIndex > -1) {
             receipe?.imagesIds?.splice(fileIndex, 1);
         }
+    }
+
+    @Mutation
+    public insertImageToReceipe(addModel: AddImageToReceipeDto) {
+        const receipe = this.receipes.find(x => x.id === addModel.receipeId);
+        receipe?.imagesIds?.push(addModel.imageId);
     }
 }

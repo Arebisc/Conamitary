@@ -136,13 +136,10 @@ export default class EditReceipe extends Vue {
     }
 
     private async saveNewFiles() {
-        debugger;
         await imagesModule.addImagesToReceipe({
             receipeId: this.receipe.id as string,
             images: this.newImages,
         });
-        // eslint-disable-next-line no-undef
-        this.$router.push({ name: nameof<Home>() });
     }
 
     private removeImage(imageId: string, receipeId: string) {
@@ -151,9 +148,12 @@ export default class EditReceipe extends Vue {
                 text: 'Czy na pewno chcesz usunąć to zdjęcie?',
                 title: 'Uwaga!',
             })
-            .then(userResponse => {
+            .then(async userResponse => {
                 if (userResponse as boolean) {
-                    imagesModule.removeImageFromReceipe({ imageId, receipeId });
+                    await imagesModule.removeImageFromReceipe({
+                        imageId,
+                        receipeId,
+                    });
                 }
             });
     }

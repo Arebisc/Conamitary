@@ -49,7 +49,8 @@ namespace Conamitary.Services.Receipe
             receipeModel.Images.Remove(fileModel);
             await _dbContextSaver.SaveChangesAsync();
 
-            if (fileModel.Receipes.Any())
+            var fileStillInUse = await _dbFileGetter.IsFileStillInUse(fileModel.Id);
+            if (fileStillInUse)
             {
                 return;
             }
@@ -64,14 +65,11 @@ namespace Conamitary.Services.Receipe
 
             foreach(var file in files)
             {
-                if (file.Receipes.Any())
+                if (!file.Receipes.Any())
                 {
-                    string receipesIds = string.Join(", ", file.Receipes.Select(x => x.Id));
-                    throw new InvalidOperationException($"File with id: {file.Id} is still in use by receipes with ids: {receipesIds}");
+                    await _dbFileDeleter.Delete(file);
+                    await _physicalFileRemover.Remove(file.Id, file.Extension);
                 }
-
-                await _dbFileDeleter.Delete(file);
-                await _physicalFileRemover.Remove(file.Id, file.Extension);
             }
         }
     }
