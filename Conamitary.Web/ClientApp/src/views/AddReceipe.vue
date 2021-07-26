@@ -65,6 +65,9 @@ import {
 
 @Component({
     beforeRouteLeave: async function(_to, _from, next) {
+        if (_to.params.omitNavigationGuard === true.toString()) {
+            return next();
+        }
         this.$dialog
             .confirm({
                 text: 'Na pewno chcesz opuścić podstronę?',
@@ -80,6 +83,8 @@ export default class AddReceipe extends Vue {
     private readonly tiptapExtensions = baseExtensionConfigurations;
     private readonly darkToolbarAttribute = darkToolbarAttribute;
 
+    private saveButtonEnabled = true;
+
     private receipe: AddReceipeModel = {
         title: undefined,
         ingredients: undefined,
@@ -88,13 +93,23 @@ export default class AddReceipe extends Vue {
     };
 
     private async save() {
+        this.saveButtonEnabled = false;
+
         const addedReceipe = await receipesModule.addReceipe(this.receipe);
         await imagesModule.addImagesToReceipe({
             receipeId: addedReceipe?.id as string,
             images: this.receipe.images,
         });
-        // eslint-disable-next-line no-undef
-        this.$router.push({ name: nameof<Home>() });
+
+        this.saveButtonEnabled = true;
+
+        this.$router.push({
+            // eslint-disable-next-line no-undef
+            name: nameof<Home>(),
+            params: {
+                omitNavigationGuard: true.toString(),
+            },
+        });
     }
 }
 </script>

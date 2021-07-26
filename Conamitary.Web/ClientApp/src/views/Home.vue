@@ -107,7 +107,7 @@
 </template>
 
 <script lang="ts">
-import { receipesModule } from '@/store';
+import { imagesModule, receipesModule } from '@/store';
 import { Component, Vue } from 'vue-property-decorator';
 import { $inject } from '@vanroeybe/vue-inversify-plugin';
 import { EmptyReceipeGeneratorInterface } from '@/abstract/receipes/EmptyReceipeGeneratorInterface';
@@ -166,12 +166,16 @@ export default class Home extends Vue {
     }
 
     private async removeReceipe(receipe: ReceipeDto) {
-        const confirmMessage = `Jesteś pewny/a, że chcesz usunąć przepis: ${receipe.title}`;
-
-        if (confirm(confirmMessage)) {
-            await receipesModule.deleteReceipe(receipe.id as string);
-        }
-        this.receipeDialog = false;
+        this.$dialog
+            .confirm({
+                text: `Jesteś pewny/a, że chcesz usunąć przepis: ${receipe.title}`,
+                title: 'Uwaga!',
+            })
+            .then(async userResponse => {
+                if (userResponse as boolean) {
+                    await receipesModule.deleteReceipe(receipe.id as string);
+                }
+            });
     }
 
     private editReceipe(receipeToEdit: ReceipeDto) {

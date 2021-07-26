@@ -108,6 +108,9 @@ import { imagesModule } from '@/store/index';
 
 @Component({
     beforeRouteLeave: async function(_to, _from, next) {
+        if (_to.params.omitNavigationGuard === true.toString()) {
+            return next();
+        }
         this.$dialog
             .confirm({
                 text: 'Na pewno chcesz opuścić podstronę?',
@@ -131,8 +134,14 @@ export default class EditReceipe extends Vue {
 
     private async save() {
         await receipesModule.editReceipe(this.receipe);
-        // eslint-disable-next-line no-undef
-        this.$router.push({ name: nameof<Home>() });
+
+        this.$router.push({
+            // eslint-disable-next-line no-undef
+            name: nameof<Home>(),
+            params: {
+                omitNavigationGuard: true.toString(),
+            },
+        });
     }
 
     private async saveNewFiles() {
