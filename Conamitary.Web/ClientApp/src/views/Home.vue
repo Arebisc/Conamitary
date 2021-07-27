@@ -2,94 +2,16 @@
     <div class="home">
         <v-container>
             <h1>Moje przepisy</h1>
-            <v-dialog
-                v-model="receipeDialog"
-                fullscreen
-                hide-overlay
-                transition="dialog-bottom-transition"
-            >
-                <v-card>
-                    <v-toolbar dark color="primary">
-                        <v-btn icon dark @click="receipeDialog = false">
-                            <v-icon>mdi-close</v-icon>
-                        </v-btn>
-                        <v-toolbar-title>{{
-                            currentReceipe.title
-                        }}</v-toolbar-title>
-
-                        <v-spacer></v-spacer>
-
-                        <v-btn
-                            color="warning"
-                            @click="editReceipe(currentReceipe)"
-                            icon
-                        >
-                            <v-icon>mdi-pencil</v-icon>
-                        </v-btn>
-                        <v-btn
-                            color="error"
-                            @click="removeReceipe(currentReceipe)"
-                            icon
-                        >
-                            <v-icon>mdi-delete</v-icon>
-                        </v-btn>
-                    </v-toolbar>
-                    <v-container id="receipe-dialog-content">
-                        <v-carousel
-                            v-model="carouselIndex"
-                            :show-arrows="carouselNavigationArrows"
-                            :hide-delimiters="!carouselNavigationArrows"
-                        >
-                            <v-carousel-item
-                                v-for="imageId in currentReceipe.imagesIds"
-                                :key="imageId"
-                            >
-                                <receipe-image
-                                    :imageId="imageId"
-                                    :maxHeight="600"
-                                ></receipe-image>
-                            </v-carousel-item>
-
-                            <!-- When item does not exist, show placeholder -->
-                            <v-carousel-item
-                                v-if="
-                                    currentReceipe.imagesIds === undefined ||
-                                        currentReceipe.imagesIds.length === 0
-                                "
-                            >
-                                <receipe-image
-                                    :imageId="undefined"
-                                    :maxHeight="600"
-                                ></receipe-image>
-                            </v-carousel-item>
-                        </v-carousel>
-
-                        <v-card class="receipe-dialog-item">
-                            <v-card-title>
-                                Składniki
-                            </v-card-title>
-                            <v-card-text
-                                v-html="currentReceipe.ingredients"
-                            ></v-card-text>
-                        </v-card>
-                        <v-card class="receipe-dialog-item">
-                            <v-card-title>
-                                Instrukcja
-                            </v-card-title>
-                            <v-card-text
-                                v-html="currentReceipe.instructions"
-                            ></v-card-text>
-                        </v-card>
-                    </v-container>
-                </v-card>
-            </v-dialog>
-
             <v-container
                 fluid
                 class="d-flex justify-start mb-3 flex-wrap"
                 id="receipts-container"
             >
+                <h1 v-if="receipes.lenght === 0">
+                    Nie masz jeszcze żadnych przepisów.
+                </h1>
                 <receipe-card
+                    v-else
                     v-for="receipe in receipes"
                     :key="receipe.id"
                     :id="receipe.id"
@@ -107,40 +29,21 @@
 </template>
 
 <script lang="ts">
-import { imagesModule, receipesModule } from '@/store';
+import { receipesModule } from '@/store';
 import { Component, Vue } from 'vue-property-decorator';
-import { $inject } from '@vanroeybe/vue-inversify-plugin';
-import { EmptyReceipeGeneratorInterface } from '@/abstract/receipes/EmptyReceipeGeneratorInterface';
-import { ReceipeDto } from '@/dtos/receipeDto';
 
 import ReceipeCard from '@/components/ReceipeCard.vue';
-import EditReceipe from './EditReceipe.vue';
-import ReceipeImage from '@/components/ReceipeImage.vue';
+import Receipe from '@/views/Receipe.vue';
+import { ReceipeDto } from '@/dtos/receipeDto';
 
 @Component({
     components: {
         ReceipeCard,
-        ReceipeImage,
     },
 })
 export default class Home extends Vue {
-    // eslint-disable-next-line no-undef
-    @$inject(nameof<EmptyReceipeGeneratorInterface>())
-    private emptyReceipeGenerator!: EmptyReceipeGeneratorInterface;
-
-    private receipeDialog = false;
-    private currentReceipe: ReceipeDto = this.emptyReceipeGenerator.generate();
-
     private readonly receipesPerPage = 9;
     private pageNumber = 1;
-
-    private carouselIndex = 0;
-    private get carouselNavigationArrows() {
-        return (
-            !!this.currentReceipe.imagesIds &&
-            this.currentReceipe.imagesIds.length > 1
-        );
-    }
 
     private get receipes() {
         return receipesModule.receipesGetter.slice(
@@ -157,33 +60,15 @@ export default class Home extends Vue {
 
     private async created() {
         await receipesModule.loadReceipes();
-        this.currentReceipe = this.emptyReceipeGenerator.generate();
     }
 
-    private showReceipe(receipe: ReceipeDto) {
-        this.currentReceipe = receipe;
-        this.receipeDialog = true;
-    }
-
-    private async removeReceipe(receipe: ReceipeDto) {
-        this.$dialog
-            .confirm({
-                text: `Jesteś pewny/a, że chcesz usunąć przepis: ${receipe.title}`,
-                title: 'Uwaga!',
-            })
-            .then(async userResponse => {
-                if (userResponse as boolean) {
-                    await receipesModule.deleteReceipe(receipe.id as string);
-                }
-            });
-    }
-
-    private editReceipe(receipeToEdit: ReceipeDto) {
-        this.$router.push({
+    private async showReceipe(receipe: ReceipeDto) {
+        await this.$router.push({
             // eslint-disable-next-line no-undef
-            name: nameof<EditReceipe>(),
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            params: { receipe: receipeToEdit as any },
+            name: nameof<Receipe>(),
+            params: {
+                receipeId: receipe.id as string,
+            },
         });
     }
 }

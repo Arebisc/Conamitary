@@ -21,6 +21,15 @@ export class ReceipeModule extends VuexModule {
 
     private receipes: ReceipeDto[] = [];
 
+    public get receipeGetter() {
+        return (id: string) => {
+            if (!id) {
+                return null;
+            }
+            return this.receipes.find(x => x.id === id);
+        };
+    }
+
     public get receipesGetter() {
         return this.receipes;
     }

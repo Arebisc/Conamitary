@@ -4,6 +4,7 @@ import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
 import AddReceipe from '../views/AddReceipe.vue';
 import EditReceipe from '../views/EditReceipe.vue';
+import Receipe from '../views/Receipe.vue';
 
 Vue.use(VueRouter);
 
@@ -17,6 +18,12 @@ const routes: Array<RouteConfig> = [
         path: '/add-receipe',
         name: nameof<AddReceipe>(),
         component: AddReceipe,
+    },
+    {
+        path: '/receipe',
+        name: nameof<Receipe>(),
+        component: Receipe,
+        props: true,
     },
     {
         path: '/edit-receipe',
