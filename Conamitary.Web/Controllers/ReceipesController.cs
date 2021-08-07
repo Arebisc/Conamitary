@@ -1,6 +1,7 @@
 ﻿using Conamitary.Dtos.Receipes;
 using Conamitary.Services.Abstract.Receipe;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -13,17 +14,20 @@ namespace Conamitary.Web.Controllers
         private readonly IReceipeGetter _receipeGetter;
         private readonly IReceipeUpdater _receipeUpdater;
         private readonly IReceipeDeleter _receipeRemover;
+        private readonly ILogger<ReceipesController> _logger;
 
         public ReceipesController(
             IReceipeAdder receipeAdder,
             IReceipeGetter receipeGetter,
             IReceipeUpdater receipeUpdater,
-            IReceipeDeleter receipeRemover)
+            IReceipeDeleter receipeRemover,
+            ILogger<ReceipesController> logger)
         {
             _receipeAdder = receipeAdder;
             _receipeGetter = receipeGetter;
             _receipeUpdater = receipeUpdater;
             _receipeRemover = receipeRemover;
+            _logger = logger;
         }
 
 

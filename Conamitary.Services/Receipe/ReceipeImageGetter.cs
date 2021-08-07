@@ -2,6 +2,7 @@
 using Conamitary.Services.Abstract.PhysicalFiles;
 using Conamitary.Services.Abstract.Receipe;
 using Conamitary.Services.Commons.ServiceResults;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -11,13 +12,16 @@ namespace Conamitary.Services.Receipe
     {
         private readonly IDbFileGetter _dbFileGetter;
         private readonly IPhysicalFileGetter _physicalFileGetter;
+        private readonly ILogger<ReceipeImageGetter> _logger;
 
         public ReceipeImageGetter(
             IDbFileGetter dbFileGetter,
-            IPhysicalFileGetter physicalFileGetter)
+            IPhysicalFileGetter physicalFileGetter,
+            ILogger<ReceipeImageGetter> logger)
         {
             _dbFileGetter = dbFileGetter;
             _physicalFileGetter = physicalFileGetter;
+            _logger = logger;
         }
 
         public async Task<FileGetterResult> Get(Guid fileId)
@@ -25,6 +29,7 @@ namespace Conamitary.Services.Receipe
             var imageModel = await _dbFileGetter.Get(fileId);
             if (imageModel == null)
             {
+                _logger.LogWarning($"File with id: {fileId} not found");
                 return null;
             }
 
