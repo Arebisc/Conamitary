@@ -39,7 +39,7 @@ namespace Conamitary.Services.Commons
 
             try
             {
-                _logger.LogInformation($"Sending files with ids: {string.Join(', ', filesIds)}" +
+                _logger.LogInformation($"Sending files with ids: {string.Join(", ", filesIds)}" +
                     $" to file microservice.");
                 await httpClient.SendAsync(request);
             }
