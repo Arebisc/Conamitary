@@ -2,6 +2,7 @@
 using Conamitary.Database.Abstract.Receipe;
 using Conamitary.Services.Abstract.PhysicalFiles;
 using Conamitary.Services.Abstract.Receipe;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,19 +17,22 @@ namespace Conamitary.Services.Receipe
         private readonly IPhysicalFileRemover _physicalFileRemover;
         private readonly IDbFileGetter _dbFileGetter;
         private readonly IDbFileDeleter _dbFileDeleter;
+        private readonly ILogger<ReceipeImageRemover> _logger;
 
         public ReceipeImageRemover(
             IDbReceipeGetter dbReceipeGetter,
             IDbContextSaver dbContextSaver,
             IPhysicalFileRemover physicalFileRemover,
             IDbFileGetter dbFileGetter,
-            IDbFileDeleter dbFileDeleter)
+            IDbFileDeleter dbFileDeleter,
+            ILogger<ReceipeImageRemover> logger)
         {
             _dbReceipeGetter = dbReceipeGetter;
             _dbContextSaver = dbContextSaver;
             _physicalFileRemover = physicalFileRemover;
             _dbFileGetter = dbFileGetter;
             _dbFileDeleter = dbFileDeleter;
+            _logger = logger;
         }
 
         public async Task RemoveImageFromReceipe(Guid fileId, Guid receipeId)
@@ -46,12 +50,15 @@ namespace Conamitary.Services.Receipe
                     $"with id: {fileId}");
             }
 
+            _logger.LogDebug($"Removing file with id: {fileModel.Id}");
+
             receipeModel.Images.Remove(fileModel);
             await _dbContextSaver.SaveChangesAsync();
 
             var fileStillInUse = await _dbFileGetter.IsFileStillInUse(fileModel.Id);
             if (fileStillInUse)
             {
+                _logger.LogInformation($"File with id: {fileModel.Id} still in use");
                 return;
             }
 
@@ -62,6 +69,8 @@ namespace Conamitary.Services.Receipe
         {
             var files = (await _dbFileGetter.Get(true))
                 .Where(x => filesIds.Contains(x.Id));
+
+            _logger.LogDebug($"Removing files with ids: {string.Join(", ", files.Select(x => x.Id))}");
 
             foreach(var file in files)
             {

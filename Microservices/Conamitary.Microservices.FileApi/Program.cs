@@ -18,7 +18,7 @@ namespace Conamitary.Microservices.FileApi
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "Program stopped because of exception");
+                logger.Fatal(ex, "Program stopped because of exception");
             }
             finally
             {

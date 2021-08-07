@@ -6,6 +6,7 @@ using Conamitary.Services.Abstract.Commons;
 using Conamitary.Services.Abstract.PhysicalFiles;
 using Conamitary.Services.Abstract.Receipe;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace Conamitary.Services.Receipe
         private readonly IDbContextSaver _dbContextSaver;
         private readonly IPhysicalFileSaver _physicalFileSaver;
         private readonly IMd5Calculator _md5Calculator;
+        private readonly ILogger<ReceipeImageAdder> _logger;
 
         public ReceipeImageAdder(
             IDbReceipeGetter dbReceipeGetter,
@@ -26,7 +28,8 @@ namespace Conamitary.Services.Receipe
             IDbFileGetter dbFileGetter,
             IDbContextSaver dbContextSaver,
             IPhysicalFileSaver physicalFileSaver,
-            IMd5Calculator md5Calculator)
+            IMd5Calculator md5Calculator,
+            ILogger<ReceipeImageAdder> logger)
         {
             _dbReceipeGetter = dbReceipeGetter;
             _dbFileAdder = dbFileAdder;
@@ -34,6 +37,7 @@ namespace Conamitary.Services.Receipe
             _dbContextSaver = dbContextSaver;
             _physicalFileSaver = physicalFileSaver;
             _md5Calculator = md5Calculator;
+            _logger = logger;
         }
 
         public async Task<Guid> Add(Guid receipeId, IFormFile file)
@@ -46,16 +50,21 @@ namespace Conamitary.Services.Receipe
 
             using var fileStream = file.OpenReadStream();
             var md5Checksum = _md5Calculator.CalculateHash(fileStream);
-            var existingFileModel = await _dbFileGetter.Get(md5Checksum);
 
+            _logger.LogDebug($"Calculated checksum: {md5Checksum}");
+
+            var existingFileModel = await _dbFileGetter.Get(md5Checksum);
             if (existingFileModel != null)
             {
+                _logger.LogDebug("Found file with same checksum. Adding reference.");
+
                 receipeEntity.Images.Add(existingFileModel);
                 await _dbContextSaver.SaveChangesAsync();
                 return existingFileModel.Id;
             }
             else
             {
+                _logger.LogDebug("File with same checksum does not exist. Creating new one.");
                 var fileModel = new File
                 {
                     Id = Guid.NewGuid(),

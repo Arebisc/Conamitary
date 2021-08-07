@@ -3,6 +3,8 @@ using Conamitary.Database.Abstract;
 using Conamitary.Database.Abstract.Receipe;
 using Conamitary.Dtos.Receipes;
 using Conamitary.Services.Abstract.Receipe;
+using Microsoft.Extensions.Logging;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Conamitary.Services.Receipe
@@ -12,15 +14,18 @@ namespace Conamitary.Services.Receipe
         private readonly IDbReceipeAdder _dbReceipeAdder;
         private readonly IDbContextSaver _dbContextSaver;
         private readonly IMapper _mapper;
+        private readonly ILogger<ReceipeAdder> _logger;
 
         public ReceipeAdder(
             IDbReceipeAdder dbReceipeAdder,
             IDbContextSaver dbContextSaver,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<ReceipeAdder> logger)
         {
             _dbReceipeAdder = dbReceipeAdder;
             _dbContextSaver = dbContextSaver;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<ReceipeDto> Add(AddReceipeDto receipeDto)
@@ -29,6 +34,8 @@ namespace Conamitary.Services.Receipe
 
             await _dbReceipeAdder.Add(model);
             await _dbContextSaver.SaveChangesAsync();
+
+            _logger.LogDebug("Added new receipe: ", JsonSerializer.Serialize(model));
 
             return _mapper.Map<ReceipeDto>(model);
         }

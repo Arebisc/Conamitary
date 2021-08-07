@@ -1,5 +1,6 @@
 ﻿using Conamitary.Services.Abstract.Commons;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -11,13 +12,16 @@ namespace Conamitary.Services.Commons
     public class FileApiHttpClient : IFileApiHttpClient
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILogger<FileApiHttpClient> _logger;
         private readonly string _fileApiUrl;
 
         public FileApiHttpClient(
             IHttpClientFactory httpClientFactory,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ILogger<FileApiHttpClient> logger)
         {
             _httpClientFactory = httpClientFactory;
+            _logger = logger;
             _fileApiUrl = configuration.GetSection("FileApiUrl").Value;
         }
 
@@ -32,7 +36,18 @@ namespace Conamitary.Services.Commons
                 Method = HttpMethod.Delete,
                 RequestUri = new Uri(url)
             };
-            await httpClient.SendAsync(request);
+
+            try
+            {
+                _logger.LogInformation($"Sending files with ids: {string.Join(', ', filesIds)}" +
+                    $" to file microservice.");
+                await httpClient.SendAsync(request);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError("Error while requesting files to remove.");
+                _logger.LogError(ex.Message, ex.StackTrace);
+            }
         }
     }
 }

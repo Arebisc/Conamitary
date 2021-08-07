@@ -1,5 +1,6 @@
 ﻿using Conamitary.Services.Abstract.PhysicalFiles;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -9,16 +10,21 @@ namespace Conamitary.Services.PhysicalFiles
     public class LocalDiskFileSaver : IPhysicalFileSaver
     {
         private readonly string _savePath;
+        private readonly ILogger<LocalDiskFileSaver> _logger;
 
         public LocalDiskFileSaver(
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ILogger<LocalDiskFileSaver> logger)
         {
             _savePath = configuration.GetSection("FilesLocalPath").Value;
+            _logger = logger;
         }
 
         public async Task<bool> Save(Guid fileId, string extension, Stream fileStream)
         {
             var fullSavePath = GetSavePath(fileId, extension);
+            
+            _logger.LogInformation($"Saving physical file at location: {fullSavePath}.");
             var saveResult = await SaveFileToDisk(fullSavePath, fileStream);
 
             return saveResult;
@@ -41,6 +47,7 @@ namespace Conamitary.Services.PhysicalFiles
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error occured while saving file!");
                 return false;
             }
         }
