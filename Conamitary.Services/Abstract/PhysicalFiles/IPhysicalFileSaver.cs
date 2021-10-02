@@ -1,6 +1,4 @@
-﻿using Conamitary.Dtos.Files;
-using Conamitary.Services.Commons.ServiceResults;
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 
