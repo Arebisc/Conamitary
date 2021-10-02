@@ -33,6 +33,7 @@ namespace Conamitary.Microservices.FileApi
             services.AddScoped<IPhysicalFileSaver, LocalDiskFileSaver>();
             services.AddScoped<IPhysicalFileGetter, LocalDiskFileGetter>();
             services.AddScoped<IPhysicalFileRemover, LocalDiskFileRemover>();
+            services.AddScoped<IPhysicalPathCreator, LocalDiskPathCreator>();
 
             services.AddScoped<IReceipeImageAdder, ReceipeImageAdder>();
             services.AddScoped<IReceipeImageRemover, ReceipeImageRemover>();
