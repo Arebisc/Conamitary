@@ -1,5 +1,6 @@
 using Conamitary.Database;
 using Conamitary.Database.Configuration;
+using Conamitary.Microservices.FileApi.StartupFilters;
 using Conamitary.Services.Abstract.Commons;
 using Conamitary.Services.Abstract.PhysicalFiles;
 using Conamitary.Services.Abstract.Receipe;
@@ -40,6 +41,8 @@ namespace Conamitary.Microservices.FileApi
             services.AddScoped<IReceipeImageGetter, ReceipeImageGetter>();
 
             services.AddScoped<IMd5Calculator, Md5Calculator>();
+
+            services.AddTransient<IStartupFilter, PhysialFilesPathStartupFilter>();
 
             services.AddDbServices();
 
