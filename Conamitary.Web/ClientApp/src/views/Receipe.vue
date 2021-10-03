@@ -110,6 +110,9 @@ export default class Home extends Vue {
             .then(async userResponse => {
                 if (userResponse as boolean) {
                     await receipesModule.deleteReceipe(receipe.id as string);
+
+                    // eslint-disable-next-line no-undef
+                    this.$router.push({ name: nameof<Home>() });
                 }
             });
     }
