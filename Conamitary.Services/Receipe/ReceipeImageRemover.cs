@@ -76,10 +76,12 @@ namespace Conamitary.Services.Receipe
             {
                 if (!file.Receipes.Any())
                 {
-                    await _dbFileDeleter.Delete(file);
                     await _physicalFileRemover.Remove(file.Id, file.Extension);
+                    await _dbFileDeleter.Delete(file);
                 }
             }
+
+            await _dbContextSaver.SaveChangesAsync();
         }
     }
 }
