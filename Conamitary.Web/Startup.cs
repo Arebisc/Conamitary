@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using VueCliMiddleware;
 
 namespace Conamitary.Web
@@ -50,7 +51,12 @@ namespace Conamitary.Web
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            if (Configuration.GetSection("SslRedirection").Exists() &&
+                Convert.ToBoolean(Configuration.GetSection("SslRedirection").Value) == true)
+            {
+                app.UseHttpsRedirection();
+            }
+
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {

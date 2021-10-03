@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Conamitary.Microservices.FileApi
 {
@@ -66,7 +67,11 @@ namespace Conamitary.Microservices.FileApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            if(Configuration.GetSection("SslRedirection").Exists() && 
+                Convert.ToBoolean(Configuration.GetSection("SslRedirection").Value) == true)
+            {
+                app.UseHttpsRedirection();
+            }
 
             app.UseRouting();
 
