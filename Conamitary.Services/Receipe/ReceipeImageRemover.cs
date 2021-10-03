@@ -63,6 +63,9 @@ namespace Conamitary.Services.Receipe
             }
 
             await _physicalFileRemover.Remove(fileId, fileModel.Extension);
+            await _dbFileDeleter.Delete(fileModel);
+
+            await _dbContextSaver.SaveChangesAsync();
         }
 
         public async Task RemoveImagesByIds(IEnumerable<Guid> filesIds)
