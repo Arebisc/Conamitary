@@ -40,8 +40,10 @@ namespace Conamitary.Services.PhysicalFiles
             try
             {
                 using var destinationStream = new FileStream(fullSavePath, FileMode.Create);
+
                 sourceStream.Seek(0, SeekOrigin.Begin);
                 await sourceStream.CopyToAsync(destinationStream);
+                sourceStream.Close();
 
                 return true;
             }
