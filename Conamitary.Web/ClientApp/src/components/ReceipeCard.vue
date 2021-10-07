@@ -2,7 +2,9 @@
     <v-card>
         <receipe-image :imageId="imageId" :maxHeight="200"></receipe-image>
         <v-card-actions>
-            <v-card-title class="title">{{ title }}</v-card-title>
+            <v-card-title class="title" :title="title">{{
+                title
+            }}</v-card-title>
         </v-card-actions>
     </v-card>
 </template>
