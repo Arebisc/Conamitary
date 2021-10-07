@@ -2,7 +2,7 @@
     <v-card>
         <receipe-image :imageId="imageId" :maxHeight="200"></receipe-image>
         <v-card-actions>
-            <v-card-title>{{ title }}</v-card-title>
+            <v-card-title class="title">{{ title }}</v-card-title>
         </v-card-actions>
     </v-card>
 </template>
@@ -29,3 +29,12 @@ export default class ReceipeCard extends Vue {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+}
+</style>
