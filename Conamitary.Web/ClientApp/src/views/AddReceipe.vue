@@ -13,14 +13,18 @@
                             required
                         ></v-text-field>
 
+                        <label>Składniki:</label>
                         <tiptap-vuetify
+                            class="receipe-wysiwyg"
                             v-model="receipe.ingredients"
                             :extensions="tiptapExtensions"
                             :toolbar-attributes="darkToolbarAttribute"
                             placeholder="Składniki..."
                         />
 
+                        <label>Instrukcja:</label>
                         <tiptap-vuetify
+                            class="receipe-wysiwyg"
                             v-model="receipe.instructions"
                             :extensions="tiptapExtensions"
                             :toolbar-attributes="darkToolbarAttribute"
@@ -116,10 +120,8 @@ export default class AddReceipe extends Vue {
 
 <style lang="scss" scoped>
 .add-receipe {
-    .v-card__text {
-        div {
-            margin-bottom: 30px;
-        }
+    .receipe-wysiwyg {
+        margin-bottom: 22px;
     }
 }
 </style>
