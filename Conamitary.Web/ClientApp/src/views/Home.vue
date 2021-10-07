@@ -2,6 +2,10 @@
     <div class="home">
         <v-container>
             <h1>Moje przepisy</h1>
+            <v-pagination
+                v-model="pageNumber"
+                :length="maxPages"
+            ></v-pagination>
             <v-container
                 fluid
                 class="d-flex justify-start mb-3 flex-wrap"
