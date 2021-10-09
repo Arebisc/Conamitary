@@ -94,7 +94,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { receipesModule } from '@/store/index';
 import Home from './Home.vue';
 import ReceipeImage from './../components/ReceipeImage.vue';
@@ -109,6 +109,8 @@ import {
     darkToolbarAttribute,
 } from '@/configurations/tiptapVuetify';
 import { imagesModule } from '@/store/index';
+import { $inject } from '@vanroeybe/vue-inversify-plugin';
+import { EmptyReceipeGeneratorInterface } from '@/abstract/receipes/EmptyReceipeGeneratorInterface';
 
 @Component({
     beforeRouteLeave: async function(_to, _from, next) {
@@ -128,13 +130,28 @@ import { imagesModule } from '@/store/index';
     },
 })
 export default class EditReceipe extends Vue {
-    @Prop()
     private receipe!: ReceipeDto;
 
     private readonly tiptapExtensions = baseExtensionConfigurations;
     private readonly darkToolbarAttribute = darkToolbarAttribute;
 
-    private newImages = [];
+    private newImages: File[] = [];
+
+    private async created() {
+        const receipeId = this.$route.params.id;
+        const receipe = receipesModule.receipeGetter(receipeId);
+
+        if (!receipe) {
+            return await this.$router.push({
+                // eslint-disable-next-line no-undef
+                name: nameof<Home>(),
+                params: {
+                    omitNavigationGuard: true.toString(),
+                },
+            });
+        }
+        this.receipe = receipe;
+    }
 
     private async save() {
         await receipesModule.editReceipe(this.receipe);

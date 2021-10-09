@@ -3,6 +3,7 @@
         <v-container>
             <h1>Moje przepisy</h1>
             <v-pagination
+                class="top-nav"
                 v-model="pageNumber"
                 :length="maxPages"
             ></v-pagination>
@@ -21,7 +22,7 @@
                     :id="receipe.id"
                     :title="receipe.title"
                     :imageId="receipe.imagesIds[0]"
-                    @click.native="showReceipe(receipe)"
+                    @click.native="showReceipe(receipe.id)"
                 ></receipe-card>
             </v-container>
             <v-pagination
@@ -38,7 +39,6 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import ReceipeCard from '@/components/ReceipeCard.vue';
 import Receipe from '@/views/Receipe.vue';
-import { ReceipeDto } from '@/dtos/receipeDto';
 
 @Component({
     components: {
@@ -66,12 +66,12 @@ export default class Home extends Vue {
         await receipesModule.loadReceipes();
     }
 
-    private async showReceipe(receipe: ReceipeDto) {
-        await this.$router.push({
+    private async showReceipe(receipeId: string) {
+        return await this.$router.push({
             // eslint-disable-next-line no-undef
             name: nameof<Receipe>(),
             params: {
-                receipeId: receipe.id as string,
+                id: receipeId,
             },
         });
     }
@@ -82,11 +82,16 @@ export default class Home extends Vue {
 .home {
     h1 {
         text-align: center;
+        margin-bottom: 14px;
     }
 
     #receipts-container div {
         width: 31.33333%;
         margin: 1%;
+    }
+
+    .top-nav {
+        margin: 12px 0;
     }
 }
 </style>

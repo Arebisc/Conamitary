@@ -10,8 +10,8 @@ export class ImagesModule extends VuexModule {
     private imagesEndpointUrl: string | null = null;
     private readonly configurationEndpointUrl = '/api/configuration/fileApiUrl';
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public constructor(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         store: Store<any>,
         private readonly receipesModule: ReceipeModule
     ) {
