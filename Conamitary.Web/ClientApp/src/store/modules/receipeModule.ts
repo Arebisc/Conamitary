@@ -8,7 +8,7 @@ import { AddImageToReceipeDto } from '@/dtos/addImagesToReceipeDto';
 
 @Module
 export class ReceipeModule extends VuexModule {
-    private readonly receipeUrl = 'api/receipes';
+    private readonly receipeUrl = '/api/receipes';
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public constructor(store: Store<any>) {
