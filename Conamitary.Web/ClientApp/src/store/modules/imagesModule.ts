@@ -8,7 +8,7 @@ import { ReceipeModule } from './receipeModule';
 @Module
 export class ImagesModule extends VuexModule {
     private imagesEndpointUrl: string | null = null;
-    private readonly configurationEndpointUrl = 'api/configuration/fileApiUrl';
+    private readonly configurationEndpointUrl = '/api/configuration/fileApiUrl';
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public constructor(
