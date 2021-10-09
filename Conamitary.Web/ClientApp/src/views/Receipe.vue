@@ -8,7 +8,7 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn color="warning" @click="editReceipe(receipe)" icon>
+            <v-btn color="warning" @click="editReceipe(receipe.id)" icon>
                 <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <v-btn color="error" @click="removeReceipe(receipe)" icon>
@@ -89,13 +89,12 @@ export default class Home extends Vue {
     }
 
     private async created() {
-        const id = this.$route.params.receipeId;
+        const id = this.$route.params.id;
         const receipe = receipesModule.receipeGetter(id);
 
         if (!receipe) {
             // eslint-disable-next-line no-undef
-            this.$router.push({ name: nameof<Home>() });
-            return;
+            return await this.$router.push({ name: nameof<Home>() });
         }
 
         this.receipe = receipe;
@@ -117,18 +116,17 @@ export default class Home extends Vue {
             });
     }
 
-    private editReceipe(receipeToEdit: ReceipeDto) {
-        this.$router.push({
+    private async editReceipe(receipeId: string) {
+        return await this.$router.push({
             // eslint-disable-next-line no-undef
             name: nameof<EditReceipe>(),
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            params: { receipe: receipeToEdit as any },
+            params: { id: receipeId },
         });
     }
 
     private goBack() {
         // eslint-disable-next-line no-undef
-        this.$router.push({ name: nameof<Home>() });
+        return this.$router.push({ name: nameof<Home>() });
     }
 }
 </script>

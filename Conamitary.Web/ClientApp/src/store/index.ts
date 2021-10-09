@@ -10,3 +10,8 @@ export default store;
 
 export const receipesModule = new ReceipeModule(store);
 export const imagesModule = new ImagesModule(store, receipesModule);
+
+export const initializeStore = async () => {
+    await receipesModule.loadReceipes();
+    await imagesModule.initializeModule();
+};

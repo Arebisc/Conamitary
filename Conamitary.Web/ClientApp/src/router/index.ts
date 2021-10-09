@@ -20,13 +20,13 @@ const routes: Array<RouteConfig> = [
         component: AddReceipe,
     },
     {
-        path: '/receipe',
+        path: '/receipe/:id',
         name: nameof<Receipe>(),
         component: Receipe,
         props: true,
     },
     {
-        path: '/edit-receipe',
+        path: '/receipe/:id/edit',
         name: nameof<EditReceipe>(),
         component: EditReceipe,
         props: true,
