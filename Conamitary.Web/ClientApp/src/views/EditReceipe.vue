@@ -109,8 +109,6 @@ import {
     darkToolbarAttribute,
 } from '@/configurations/tiptapVuetify';
 import { imagesModule } from '@/store/index';
-import { $inject } from '@vanroeybe/vue-inversify-plugin';
-import { EmptyReceipeGeneratorInterface } from '@/abstract/receipes/EmptyReceipeGeneratorInterface';
 
 @Component({
     beforeRouteLeave: async function(_to, _from, next) {
@@ -161,6 +159,7 @@ export default class EditReceipe extends Vue {
             name: nameof<Home>(),
             params: {
                 omitNavigationGuard: true.toString(),
+                returnedFromReceipeId: this.receipe.id as string,
             },
         });
     }
