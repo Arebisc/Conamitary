@@ -159,6 +159,7 @@ export default class EditReceipe extends Vue {
             name: nameof<Home>(),
             params: {
                 omitNavigationGuard: true.toString(),
+                returnedFromReceipeId: this.receipe.id as string,
             },
         });
     }

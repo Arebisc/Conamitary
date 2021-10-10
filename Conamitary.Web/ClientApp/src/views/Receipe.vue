@@ -125,8 +125,13 @@ export default class Home extends Vue {
     }
 
     private goBack() {
-        // eslint-disable-next-line no-undef
-        return this.$router.push({ name: nameof<Home>() });
+        return this.$router.push({
+            // eslint-disable-next-line no-undef
+            name: nameof<Home>(),
+            params: {
+                returnedFromReceipeId: this.receipe.id as string,
+            },
+        });
     }
 }
 </script>

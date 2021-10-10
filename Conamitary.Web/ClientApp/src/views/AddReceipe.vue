@@ -100,6 +100,10 @@ export default class AddReceipe extends Vue {
         this.saveButtonEnabled = false;
 
         const addedReceipe = await receipesModule.addReceipe(this.receipe);
+        if (!addedReceipe) {
+            return;
+        }
+
         await imagesModule.addImagesToReceipe({
             receipeId: addedReceipe?.id as string,
             images: this.receipe.images,
@@ -112,6 +116,7 @@ export default class AddReceipe extends Vue {
             name: nameof<Home>(),
             params: {
                 omitNavigationGuard: true.toString(),
+                returnedFromReceipeId: addedReceipe.id as string,
             },
         });
     }

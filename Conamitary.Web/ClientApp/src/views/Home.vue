@@ -39,6 +39,8 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import ReceipeCard from '@/components/ReceipeCard.vue';
 import Receipe from '@/views/Receipe.vue';
+import { ReceipesPaginationServiceInterface } from '@/abstract/receipes/ReceipesPaginationServiceInterface';
+import { $inject } from '@vanroeybe/vue-inversify-plugin';
 
 @Component({
     components: {
@@ -46,6 +48,10 @@ import Receipe from '@/views/Receipe.vue';
     },
 })
 export default class Home extends Vue {
+    // eslint-disable-next-line no-undef
+    @$inject(nameof<ReceipesPaginationServiceInterface>())
+    private readonly receipesPaginationService!: ReceipesPaginationServiceInterface;
+
     private readonly receipesPerPage = 9;
     private pageNumber = 1;
 
@@ -57,13 +63,24 @@ export default class Home extends Vue {
     }
 
     private get maxPages() {
-        return Math.ceil(
-            receipesModule.receipesGetter.length / this.receipesPerPage
+        return this.receipesPaginationService.getMaxPageNumber(
+            this.receipesPerPage,
+            receipesModule.receipesGetter.length
         );
     }
 
     private async created() {
         await receipesModule.loadReceipes();
+
+        const returnedFromReceipeId = this.$route.params.returnedFromReceipeId;
+        if (returnedFromReceipeId) {
+            const pageNumber = this.receipesPaginationService.getPageNumberForReceipe(
+                this.receipesPerPage,
+                returnedFromReceipeId,
+                receipesModule.receipesGetter
+            );
+            this.pageNumber = pageNumber;
+        }
     }
 
     private async showReceipe(receipeId: string) {
