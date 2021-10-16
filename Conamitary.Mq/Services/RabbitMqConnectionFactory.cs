@@ -7,11 +7,13 @@ using System.Text.Json;
 
 namespace Conamitary.Mq.Services
 {
-    public class RabbitMqConnectionFactory: IRabbitMqConnectionFactory
+    public class RabbitMqConnectionFactory: IRabbitMqConnectionFactory, System.IDisposable
     {
         private readonly IConnection _connection;
         private readonly RabbitMq _options;
         private readonly ILogger<RabbitMqConnectionFactory> _logger;
+
+        private bool _disposedValue;
 
         public RabbitMqConnectionFactory(IOptions<RabbitMq> options,
             ILogger<RabbitMqConnectionFactory> logger)
@@ -44,6 +46,24 @@ namespace Conamitary.Mq.Services
                 Port = _options.Port,
             };
             factory.CreateConnection();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _connection.Dispose();
+                }
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            System.GC.SuppressFinalize(this);
         }
     }
 }
