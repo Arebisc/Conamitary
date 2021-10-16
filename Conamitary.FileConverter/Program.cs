@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Conamitary.Microservices.FileConverter.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -12,7 +13,7 @@ namespace Conamitary.Microservices.FileConverter
 {
     class Program
     {
-        public static IConfiguration configuration;
+        public static IConfiguration Configuration;
 
         static async Task Main(string[] args)
         {
@@ -37,22 +38,30 @@ namespace Conamitary.Microservices.FileConverter
         static void ConfigureServices(HostBuilderContext hostBuilderContext, 
             IServiceCollection services)
         {
-            configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
-                .AddJsonFile("appsettings.json", false)
-                .Build();
-
-            services.AddSingleton(configuration);
+            ConfigureOptions(services);
 
             services.AddLogging(loggingBuilder =>
              {
                  // configure Logging with NLog
                  loggingBuilder.ClearProviders();
                  loggingBuilder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                 loggingBuilder.AddNLog(configuration);
+                 loggingBuilder.AddNLog(Configuration);
              });
 
             services.AddHostedService<ThumbnailGeneratorService>();
+        }
+
+        static void ConfigureOptions(IServiceCollection services)
+        {
+            Configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetParent(AppContext.BaseDirectory).FullName)
+                .AddJsonFile("appsettings.json", false)
+                .Build();
+
+            services.AddSingleton(Configuration);
+
+            services.Configure<RabbitMqOptions>(
+                Configuration.GetSection("RabbitMq"));
         }
     }
 }
