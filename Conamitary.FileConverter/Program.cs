@@ -52,7 +52,7 @@ namespace Conamitary.Microservices.FileConverter
                  loggingBuilder.AddNLog(configuration);
              });
 
-            services.AddHostedService<MqListener>();
+            services.AddHostedService<ThumbnailGeneratorService>();
         }
     }
 }

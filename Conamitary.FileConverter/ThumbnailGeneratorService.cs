@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Conamitary.Microservices.FileConverter
 {
-    public class MqListener : IHostedService
+    public class ThumbnailGeneratorService : IHostedService
     {
         public Task StartAsync(CancellationToken cancellationToken)
         {
