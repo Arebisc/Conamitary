@@ -1,4 +1,4 @@
-﻿using Conamitary.Microservices.FileConverter.Configuration;
+﻿using Conamitary.Mq.Configuration.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -60,8 +60,8 @@ namespace Conamitary.Microservices.FileConverter
 
             services.AddSingleton(Configuration);
 
-            services.Configure<RabbitMqOptions>(
-                Configuration.GetSection("RabbitMq"));
+            services.Configure<RabbitMq>(
+                Configuration.GetSection(nameof(RabbitMq)));
         }
     }
 }

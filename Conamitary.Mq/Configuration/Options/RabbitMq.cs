@@ -1,6 +1,6 @@
-﻿namespace Conamitary.Microservices.FileConverter.Configuration
+﻿namespace Conamitary.Mq.Configuration.Options
 {
-    public class RabbitMqOptions
+    public class RabbitMq
     {
         public string Host { get; set; }
         public string Username { get; set; }
