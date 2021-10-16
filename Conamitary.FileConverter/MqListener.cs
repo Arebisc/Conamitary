@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Conamitary.FileConverter
+namespace Conamitary.Microservices.FileConverter
 {
     public class MqListener : IHostedService
     {

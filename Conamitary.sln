@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conamitary.Microservices.FileApi", "Microservices\Conamitary.Microservices.FileApi\Conamitary.Microservices.FileApi.csproj", "{D1F98E7F-4DB2-4896-8037-3CAB6BBE2A38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conamitary.FileConverter", "Conamitary.FileConverter\Conamitary.FileConverter.csproj", "{6AAB68AE-DA94-4E05-BC94-0957E76607AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conamitary.Microservices.FileConverter", "Conamitary.FileConverter\Conamitary.Microservices.FileConverter.csproj", "{6AAB68AE-DA94-4E05-BC94-0957E76607AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

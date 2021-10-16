@@ -1,11 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using NLog;
+using NLog.Extensions.Logging;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Conamitary.FileConverter
+namespace Conamitary.Microservices.FileConverter
 {
     class Program
     {
@@ -13,9 +16,22 @@ namespace Conamitary.FileConverter
 
         static async Task Main(string[] args)
         {
-            await new HostBuilder()
-                .ConfigureServices(ConfigureServices)
-                .RunConsoleAsync();
+            var logger = LogManager.GetCurrentClassLogger();
+            try
+            {
+                await new HostBuilder()
+                    .ConfigureServices(ConfigureServices)
+                    .RunConsoleAsync();
+            }
+            catch(Exception ex)
+            {
+                logger.Error(ex, "Stopped program because of exception");
+                throw;
+            }
+            finally
+            {
+                LogManager.Shutdown();
+            }
         }
 
         static void ConfigureServices(HostBuilderContext hostBuilderContext, 
@@ -27,6 +43,14 @@ namespace Conamitary.FileConverter
                 .Build();
 
             services.AddSingleton(configuration);
+
+            services.AddLogging(loggingBuilder =>
+             {
+                 // configure Logging with NLog
+                 loggingBuilder.ClearProviders();
+                 loggingBuilder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                 loggingBuilder.AddNLog(configuration);
+             });
 
             services.AddHostedService<MqListener>();
         }
