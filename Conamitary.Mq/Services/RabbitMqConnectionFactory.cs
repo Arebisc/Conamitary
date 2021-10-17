@@ -34,12 +34,11 @@ namespace Conamitary.Mq.Services
 
         private void CreateConnection()
         {
-            _logger.LogDebug("Creating rabbitmq connection...");
+            _logger.LogDebug("Creating RabbitMq connection...");
             _logger.LogTrace("Create connection for data: ", JsonSerializer.Serialize(_options));
 
             var factory = new ConnectionFactory()
             {
-                // This is my configuration. Just change it to my own use
                 HostName = _options.Host,
                 UserName = _options.Username,
                 Password = _options.Password,
@@ -54,7 +53,7 @@ namespace Conamitary.Mq.Services
             {
                 if (disposing)
                 {
-                    _connection.Dispose();
+                    _connection.Close();
                 }
                 _disposedValue = true;
             }
